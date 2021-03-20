@@ -1,7 +1,19 @@
+import { useState } from 'react';
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.scss'
+import classnames from 'classnames'
 
 export default function Home() {
+  const [nodes, setNodes] = useState(["M0,0", "L0,50", "L50,50", "Z"])
+  const updateNodes = (i, command) => {
+    const newNodes = [...nodes]
+    newNodes[i] = command
+    setNodes(newNodes)
+  }
+  const addNode = () => {
+    setNodes([...nodes, ''])
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -10,56 +22,24 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+        <div className={classnames(styles.section, styles.editor)}>
+          {nodes.map((command, i) => <Node command={command} index={i} updateNodes={updateNodes}/>)}
+          <button onMouseDown={addNode}>Add</button>
+        </div>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className={classnames(styles.section, styles.viewer)}>
+          <svg className={styles.view} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <path fill="#0070f3" d={nodes.join(' ')} />
+          </svg>
         </div>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
     </div>
   )
+}
+
+function Node(props) {
+  const onInputChange = e => {
+    props.updateNodes(props.index, e.target.value)
+  }
+  return (<input className={styles.node} value={props.command} onChange={onInputChange}/>)
 }
