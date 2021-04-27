@@ -23,7 +23,20 @@ export default function Home() {
 
       <main className={styles.main}>
         <div className={classnames(styles.section, styles.editor)}>
-          {nodes.map((command, i) => <Node command={command} index={i} updateNodes={updateNodes}/>)}
+          {nodes.map((command, i) => {
+            const { id, name, partNames, activePartIndex } = getCommandInfo(
+              command
+            );
+            return (
+              <div>
+                <Dropdown
+                  id={id}
+                  onChange={e => updateNodes(i, e.target.value)}
+                />
+                <Node command={command} index={i} updateNodes={updateNodes} />
+              </div>
+            );
+          })}
           <button onMouseDown={addNode}>Add</button>
         </div>
 
@@ -44,7 +57,7 @@ export default function Home() {
 
 function Node(props) {
   const onInputChange = e => {
-    props.updateNodes(props.index, e.target.value.trim());
+    props.updateNodes(props.index, e.target.value);
   };
   return (
     <input
@@ -53,4 +66,35 @@ function Node(props) {
       onChange={onInputChange}
     />
   );
+}
+
+function Dropdown(props) {
+  return (
+    <select className={styles.dropdown} name='path' onChange={props.onChange}>
+      {Object.entries(commands).map(([id, command]) => (
+        <option key={id} value={id} selected={props.id === id}>
+          {command.name}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+const commands = {
+  M: {
+    name: 'Abs Move to',
+    parts: [/^M\s*\d*$/, /^M\s*\d+[, ]+\d*$/],
+    partNames: ['move to X', 'move to Y'],
+  },
+  m: { name: 'Rel Move to' },
+  L: { name: 'Abs Line' },
+  l: { name: 'Rel Line' },
+};
+function getCommandInfo(string) {
+  const command = commands[string[0]];
+  if (!command) return {};
+  const activePartIndex = (command.parts || []).findIndex(part =>
+    string.match(part)
+  );
+  return { ...command, id: string[0], activePartIndex };
 }
