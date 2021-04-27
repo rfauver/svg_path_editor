@@ -32,11 +32,12 @@
   border-radius: 4px;
   border: none;
   background: unset;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     outline: none;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
     background-color: white;
-  };
+  }
 }
 
 .viewer {
