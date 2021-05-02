@@ -47,8 +47,25 @@
   }
 }
 
-.viewer {
+.annotation {
+  display: none;
+  color: #999;
+  margin-left: 110px;
+  margin-bottom: 8px;
+}
 
+.node:focus + .annotation {
+  display: block;
+}
+
+.partName {
+}
+
+.partNameActive {
+  color: #222;
+}
+
+.viewer {
 }
 
 .view {

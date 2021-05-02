@@ -5,6 +5,7 @@ import classnames from 'classnames';
 
 export default function Home() {
   const [nodes, setNodes] = useState(['M0,0', 'L0,50', 'L50,50', 'Z']);
+  const [cursorPosition, setCursorPosition] = useState(null);
   const updateNodes = (i, command) => {
     const newNodes = [...nodes];
     newNodes[i] = command;
@@ -25,7 +26,8 @@ export default function Home() {
         <div className={classnames(styles.section, styles.editor)}>
           {nodes.map((command, i) => {
             const { id, name, partNames, activePartIndex } = getCommandInfo(
-              command
+              command,
+              cursorPosition
             );
             return (
               <div>
@@ -33,7 +35,28 @@ export default function Home() {
                   id={id}
                   onChange={e => updateNodes(i, e.target.value)}
                 />
-                <Node command={command} index={i} updateNodes={updateNodes} />
+                <Node
+                  command={command}
+                  index={i}
+                  updateNodes={updateNodes}
+                  setCursorPosition={setCursorPosition}
+                />
+                {partNames && (
+                  <div className={styles.annotation}>
+                    (
+                    {partNames.map((partName, j) => (
+                      <span
+                        className={classnames(styles.partName, {
+                          [styles.partNameActive]: j === activePartIndex,
+                        })}
+                      >
+                        {partName}
+                        {j < partNames.length - 1 ? ', ' : ''}
+                      </span>
+                    ))}
+                    )
+                  </div>
+                )}
               </div>
             );
           })}
@@ -57,13 +80,19 @@ export default function Home() {
 
 function Node(props) {
   const onInputChange = e => {
-    props.updateNodes(props.index, e.target.value);
+    props.updateNodes(props.index, e.target.value.trimStart());
+  };
+  const onCursorChange = e => {
+    props.setCursorPosition(e.target.selectionStart);
   };
   return (
     <input
       className={styles.node}
       value={props.command}
       onChange={onInputChange}
+      onKeyUp={onCursorChange}
+      onMouseUp={onCursorChange}
+      onFocus={onCursorChange}
     />
   );
 }
@@ -84,17 +113,29 @@ const commands = {
   M: {
     name: 'Abs Move to',
     parts: [/^M\s*\d*$/, /^M\s*\d+[, ]+\d*$/],
-    partNames: ['move to X', 'move to Y'],
+    partNames: ['X', 'Y'],
   },
-  m: { name: 'Rel Move to' },
-  L: { name: 'Abs Line' },
-  l: { name: 'Rel Line' },
+  m: {
+    name: 'Rel Move to',
+    parts: [/^m\s*\d*$/, /^m\s*\d+[, ]+\d*$/],
+    partNames: ['X', 'Y'],
+  },
+  L: {
+    name: 'Abs Line',
+    parts: [/^L\s*\d*$/, /^L\s*\d+[, ]+\d*$/],
+    partNames: ['X', 'Y'],
+  },
+  l: {
+    name: 'Rel Line',
+    parts: [/^l\s*\d*$/, /^l\s*\d+[, ]+\d*$/],
+    partNames: ['X', 'Y'],
+  },
 };
-function getCommandInfo(string) {
+function getCommandInfo(string, cursorPosition) {
   const command = commands[string[0]];
   if (!command) return {};
   const activePartIndex = (command.parts || []).findIndex(part =>
-    string.match(part)
+    (cursorPosition ? string.substring(0, cursorPosition) : '').match(part)
   );
   return { ...command, id: string[0], activePartIndex };
 }
