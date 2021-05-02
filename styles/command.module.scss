@@ -1,0 +1,38 @@
+.dropdown {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.instruction {
+  font-family: monospace;
+  font-size: 16px;
+  margin-bottom: 8px;
+  padding: 4px;
+  border-radius: 4px;
+  border: none;
+  background: unset;
+  &:hover,
+  &:focus {
+    outline: none;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
+    background-color: white;
+  }
+}
+
+.annotation {
+  display: none;
+  color: #999;
+  margin-left: 110px;
+  margin-bottom: 8px;
+}
+
+.instruction:focus + .annotation {
+  display: block;
+}
+
+.partName {
+}
+
+.partNameActive {
+  color: #222;
+}
