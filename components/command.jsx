@@ -24,7 +24,7 @@ export default function Command({
         className={styles.dropdown}
         name='path'
         onChange={e => updateInstructions(index, e.target.value)}
-        value={id}
+        value={id?.toUpperCase()}
       >
         {Object.entries(COMMANDS).map(([commandId, command]) => (
           <option key={commandId} value={commandId}>
@@ -32,6 +32,20 @@ export default function Command({
           </option>
         ))}
       </select>
+      Rel
+      <input
+        type='checkbox'
+        className={styles.relativeToggle}
+        checked={instruction[0].toLowerCase() === instruction[0]}
+        onChange={e =>
+          updateInstructions(
+            index,
+            e.target.checked
+              ? instruction.toLowerCase()
+              : instruction.toUpperCase()
+          )
+        }
+      />
       <input
         className={styles.instruction}
         value={instruction}

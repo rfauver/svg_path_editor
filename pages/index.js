@@ -69,7 +69,7 @@ export default function Home() {
 }
 
 function getCommandInfo(string, cursorPosition) {
-  const command = COMMANDS[string[0]];
+  const command = COMMANDS[string[0].toUpperCase()];
   if (!command) return {};
   const activePartIndex = (command.parts || []).findIndex(part =>
     (cursorPosition ? string.substring(0, cursorPosition) : '').match(part)

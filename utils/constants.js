@@ -8,90 +8,51 @@ function buildParts(id, length) {
       new RegExp(
         `^${id}\\s*${[...new Array(i + 1)]
           .map((_, j) => (i === j ? LAST_DIGIT.source : DIGIT.source))
-          .join(SEPARATOR.source)}$`
+          .join(SEPARATOR.source)}$`,
+        'i'
       )
   );
 }
 
 export const COMMANDS = {
   M: {
-    name: 'Move (absolute)',
+    name: 'Move',
     parts: buildParts('M', 2),
     partNames: ['x', 'y'],
   },
-  m: {
-    name: 'Move (relative)',
-    parts: buildParts('m', 2),
-    partNames: ['x', 'y'],
-  },
   L: {
-    name: 'Line (absolute)',
+    name: 'Line',
     parts: buildParts('L', 2),
     partNames: ['x', 'y'],
   },
-  l: {
-    name: 'Line (relative)',
-    parts: buildParts('l', 2),
-    partNames: ['x', 'y'],
-  },
   H: {
-    name: 'Horizontal Line (absolute)',
+    name: 'Horizontal Line',
     parts: buildParts('H', 2),
     partNames: ['x'],
   },
-  h: {
-    name: 'Horizontal Line (relative)',
-    parts: buildParts('h', 2),
-    partNames: ['x'],
-  },
   V: {
-    name: 'Vertical Line (absolute)',
+    name: 'Vertical Line',
     parts: buildParts('V', 1),
     partNames: ['y'],
   },
-  v: {
-    name: 'Vertical Line (relative)',
-    parts: buildParts('v', 1),
-    partNames: ['y'],
-  },
   C: {
-    name: 'Cubic Bézier Curve (absolute)',
+    name: 'Cubic Bézier Curve',
     parts: buildParts('C', 6),
     partNames: ['x1', 'y1', 'x2', 'y2', 'x', 'y'],
   },
-  c: {
-    name: 'Cubic Bézier Curve (relative)',
-    parts: buildParts('c', 6),
-    partNames: ['x1', 'y1', 'x2', 'y2', 'x', 'y'],
-  },
   S: {
-    name: 'Shortcut Bézier Curve (absolute)',
+    name: 'Shortcut Bézier Curve',
     parts: buildParts('S', 4),
     partNames: ['x2', 'y2', 'x', 'y'],
   },
-  s: {
-    name: 'Shortcut Bézier Curve (relative)',
-    parts: buildParts('s', 4),
-    partNames: ['x2', 'y2', 'x', 'y'],
-  },
   Q: {
-    name: 'Quadratic Curve (absolute)',
+    name: 'Quadratic Curve',
     parts: buildParts('Q', 4),
     partNames: ['x1', 'y1', 'x', 'y'],
   },
-  q: {
-    name: 'Quadratic Curve (relative)',
-    parts: buildParts('q', 4),
-    partNames: ['x1', 'y1', 'x', 'y'],
-  },
   T: {
-    name: 'Shortcut Quadratic Curve (absolute)',
+    name: 'Shortcut Quadratic Curve',
     parts: buildParts('T', 2),
-    partNames: ['x', 'y'],
-  },
-  t: {
-    name: 'Shortcut Quadratic Curve (relative)',
-    parts: buildParts('t', 2),
     partNames: ['x', 'y'],
   },
 };
