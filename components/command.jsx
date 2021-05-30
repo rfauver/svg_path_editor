@@ -19,7 +19,7 @@ export default function Command({
     setCursorPosition(e.target.selectionStart);
   };
   return (
-    <div>
+    <div className={styles.component}>
       <select
         className={styles.dropdown}
         name='path'
@@ -36,7 +36,7 @@ export default function Command({
       <input
         type='checkbox'
         className={styles.relativeToggle}
-        checked={instruction[0].toLowerCase() === instruction[0]}
+        checked={instruction[0]?.toLowerCase() === instruction[0]}
         onChange={e =>
           updateInstructions(
             index,

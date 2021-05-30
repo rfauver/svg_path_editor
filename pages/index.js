@@ -20,7 +20,7 @@ export default function Home() {
     setInstructions(newInstructions);
   };
   const addCommand = () => {
-    setInstructions([...instructions, '']);
+    setInstructions([...instructions, 'L']);
   };
 
   return (
@@ -69,7 +69,7 @@ export default function Home() {
 }
 
 function getCommandInfo(string, cursorPosition) {
-  const command = COMMANDS[string[0].toUpperCase()];
+  const command = COMMANDS[string[0]?.toUpperCase()];
   if (!command) return {};
   const activePartIndex = (command.parts || []).findIndex(part =>
     (cursorPosition ? string.substring(0, cursorPosition) : '').match(part)
