@@ -24,6 +24,12 @@
 .editor {
   display: flex;
   flex-direction: column;
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.indented {
+  margin-left: 20px;
 }
 
 .viewer {
