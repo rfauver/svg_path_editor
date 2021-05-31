@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Head from 'next/head';
 import Command from '../components/command';
-import { COMMANDS } from '../utils/constants';
+import { COMMANDS, SURROUNDING_TEXT } from '../utils/constants';
 import classnames from 'classnames';
 
 import styles from '../styles/home.module.scss';
@@ -32,12 +32,8 @@ export default function Home() {
 
       <main className={styles.main}>
         <div className={classnames(styles.section, styles.editor)}>
-          <div>
-            {
-              '<svg viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">'
-            }
-          </div>
-          <div className={styles.indented}>{'<path fill="#0070f3" d="'}</div>
+          <div>{SURROUNDING_TEXT[0]}</div>
+          <div className={styles.indented}>{SURROUNDING_TEXT[1]}</div>
           {instructions.map((instruction, i) => {
             const { id, partNames, activePartIndex } = getCommandInfo(
               instruction,
@@ -57,8 +53,21 @@ export default function Home() {
             );
           })}
           <button onMouseDown={addCommand}>Add</button>
-          <div className={styles.indented}>{'"</path>'}</div>
-          <div>{'</svg>'}</div>
+          <div className={styles.indented}>{SURROUNDING_TEXT[2]}</div>
+          <div>{SURROUNDING_TEXT[3]}</div>
+          <button
+            onMouseDown={() =>
+              navigator.clipboard.writeText(
+                [
+                  ...SURROUNDING_TEXT.slice(0, 2),
+                  '    ' + instructions.join(' '),
+                  ...SURROUNDING_TEXT.slice(2),
+                ].join('\n')
+              )
+            }
+          >
+            Copy
+          </button>
         </div>
 
         <div className={classnames(styles.section, styles.viewer)}>
