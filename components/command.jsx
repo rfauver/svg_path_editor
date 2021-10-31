@@ -20,32 +20,6 @@ export default function Command({
   };
   return (
     <div className={styles.component}>
-      <select
-        className={styles.dropdown}
-        name='path'
-        onChange={e => updateInstructions(index, e.target.value)}
-        value={id?.toUpperCase()}
-      >
-        {Object.entries(COMMANDS).map(([commandId, command]) => (
-          <option key={commandId} value={commandId}>
-            {command.name}
-          </option>
-        ))}
-      </select>
-      Rel
-      <input
-        type='checkbox'
-        className={styles.relativeToggle}
-        checked={instruction[0]?.toLowerCase() === instruction[0]}
-        onChange={e =>
-          updateInstructions(
-            index,
-            e.target.checked
-              ? instruction.toLowerCase()
-              : instruction.toUpperCase()
-          )
-        }
-      />
       <input
         className={styles.instruction}
         value={instruction}
@@ -71,6 +45,32 @@ export default function Command({
           )
         </div>
       )}
+      <select
+        className={styles.dropdown}
+        name='path'
+        onChange={e => updateInstructions(index, e.target.value)}
+        value={id?.toUpperCase()}
+      >
+        {Object.entries(COMMANDS).map(([commandId, command]) => (
+          <option key={commandId} value={commandId}>
+            {command.name}
+          </option>
+        ))}
+      </select>
+      <label className={styles.relativeToggleLabel}>Rel</label>
+      <input
+        type='checkbox'
+        className={styles.relativeToggle}
+        checked={instruction[0]?.toLowerCase() === instruction[0]}
+        onChange={e =>
+          updateInstructions(
+            index,
+            e.target.checked
+              ? instruction.toLowerCase()
+              : instruction.toUpperCase()
+          )
+        }
+      />
     </div>
   );
 }

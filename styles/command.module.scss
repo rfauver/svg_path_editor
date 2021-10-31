@@ -1,23 +1,45 @@
 .component {
   position: relative;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    .dropdown,
+    .relativeToggle,
+    .relativeToggleLabel {
+      visibility: visible;
+    }
+    .instruction {
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
+      background-color: white;
+    }
+  }
 }
 
 .dropdown {
   width: 100px;
-  margin-right: 10px;
+  height: 19px;
+  margin: 0 10px;
+  visibility: hidden;
+}
+
+.relativeToggleLabel,
+.relativeToggle {
+  visibility: hidden;
 }
 
 .instruction {
+  flex: 1 1 auto;
   font-family: 'Bitstream Vera Sans Mono', monospace;
   font-size: 16px;
-  margin-bottom: 8px;
+  line-height: 18px;
   padding: 4px;
+  margin-left: 36px;
   border-radius: 4px;
   border: none;
   background: unset;
-  &:hover,
+  outline: none;
   &:focus {
-    outline: none;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
     background-color: white;
   }

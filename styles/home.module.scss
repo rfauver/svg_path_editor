@@ -18,7 +18,7 @@
   background-color: #f2f2f2;
   border-radius: 20px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
-  padding: 50px;
+  padding: 30px;
 }
 
 .editor {
@@ -26,6 +26,7 @@
   flex-direction: column;
   font-family: 'Bitstream Vera Sans Mono', monospace;
   font-size: 14px;
+  line-height: 18px;
 }
 
 .indented {
