@@ -19,8 +19,18 @@ export default function Home() {
     newInstructions[i] = instruction;
     setInstructions(newInstructions);
   };
-  const addCommand = () => {
-    setInstructions([...instructions, 'L']);
+  const addCommand = index => {
+    setInstructions([
+      ...instructions.slice(0, index + 1),
+      'L',
+      ...instructions.slice(index + 1),
+    ]);
+  };
+  const removeCommand = index => {
+    setInstructions([
+      ...instructions.slice(0, index),
+      ...instructions.slice(index + 1),
+    ]);
   };
 
   return (
@@ -49,10 +59,11 @@ export default function Home() {
                 activePartIndex={activePartIndex}
                 setCursorPosition={setCursorPosition}
                 updateInstructions={updateInstructions}
+                addCommand={addCommand}
+                removeCommand={removeCommand}
               />
             );
           })}
-          <button onMouseDown={addCommand}>Add</button>
           <div className={styles.indented}>{SURROUNDING_TEXT[2]}</div>
           <div>{SURROUNDING_TEXT[3]}</div>
           <button

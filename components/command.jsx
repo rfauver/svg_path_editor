@@ -11,13 +11,14 @@ export default function Command({
   activePartIndex,
   setCursorPosition,
   updateInstructions,
+  addCommand,
+  removeCommand,
 }) {
-  const onInputChange = e => {
+  const onInputChange = e =>
     updateInstructions(index, e.target.value.trimStart());
-  };
-  const onCursorChange = e => {
-    setCursorPosition(e.target.selectionStart);
-  };
+  const onCursorChange = e => setCursorPosition(e.target.selectionStart);
+  const addCommandClicked = () => addCommand(index);
+  const removeCommandClicked = () => removeCommand(index);
   return (
     <div className={styles.component}>
       <input
@@ -71,6 +72,15 @@ export default function Command({
           )
         }
       />
+      <button className={styles.addButton} onMouseDown={addCommandClicked}>
+        Add
+      </button>
+      <button
+        className={styles.removeButton}
+        onMouseDown={removeCommandClicked}
+      >
+        Remove
+      </button>
     </div>
   );
 }

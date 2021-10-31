@@ -6,7 +6,9 @@
   &:hover {
     .dropdown,
     .relativeToggle,
-    .relativeToggleLabel {
+    .relativeToggleLabel,
+    .addButton,
+    .removeButton {
       visibility: visible;
     }
     .instruction {
@@ -24,8 +26,14 @@
 }
 
 .relativeToggleLabel,
-.relativeToggle {
+.relativeToggle,
+.addButton,
+.removeButton {
   visibility: hidden;
+}
+
+.addButton {
+  margin-left: 10px;
 }
 
 .instruction {
