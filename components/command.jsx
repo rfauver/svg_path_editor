@@ -58,20 +58,24 @@ export default function Command({
           </option>
         ))}
       </select>
-      <label className={styles.relativeToggleLabel}>Rel</label>
-      <input
-        type='checkbox'
-        className={styles.relativeToggle}
-        checked={instruction[0]?.toLowerCase() === instruction[0]}
-        onChange={e =>
-          updateInstructions(
-            index,
-            e.target.checked
-              ? instruction.toLowerCase()
-              : instruction.toUpperCase()
-          )
-        }
-      />
+      <label className={styles.relativeToggle} htmlFor={`toggle-${index}`}>
+        Rel
+        <input
+          type='checkbox'
+          id={`toggle-${index}`}
+          className={styles.toggleCheckbox}
+          checked={instruction[0]?.toLowerCase() === instruction[0]}
+          onChange={e =>
+            updateInstructions(
+              index,
+              e.target.checked
+                ? instruction.toLowerCase()
+                : instruction.toUpperCase()
+            )
+          }
+        />
+        <div className={styles.toggleSwitch} />
+      </label>
       <button className={styles.addButton} onMouseDown={addCommandClicked}>
         Add
       </button>

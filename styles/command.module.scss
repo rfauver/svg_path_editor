@@ -6,7 +6,6 @@
   &:hover {
     .dropdown,
     .relativeToggle,
-    .relativeToggleLabel,
     .addButton,
     .removeButton {
       visibility: visible;
@@ -16,24 +15,6 @@
       background-color: white;
     }
   }
-}
-
-.dropdown {
-  width: 100px;
-  height: 19px;
-  margin: 0 10px;
-  visibility: hidden;
-}
-
-.relativeToggleLabel,
-.relativeToggle,
-.addButton,
-.removeButton {
-  visibility: hidden;
-}
-
-.addButton {
-  margin-left: 10px;
 }
 
 .instruction {
@@ -89,4 +70,73 @@
 
 .partNameActive {
   color: #222;
+}
+
+.dropdown {
+  width: 100px;
+  height: 19px;
+  margin: 0 10px;
+}
+
+.dropdown,
+.relativeToggle,
+.addButton,
+.removeButton {
+  visibility: hidden;
+}
+
+.relativeToggle {
+  position: relative;
+  height: 18px;
+  width: 64px;
+}
+
+.toggleCheckbox {
+  opacity: 0;
+  position: absolute;
+  left: -10000px;
+  pointer-events: none;
+
+  &:checked {
+    & + .toggleSwitch {
+      background-color: #66bb6a;
+      &:before {
+        transform: translateX(16px);
+      }
+    }
+  }
+
+  &:focus-visible + .toggleSwitch {
+    outline: -webkit-focus-ring-color auto 1px;
+  }
+}
+
+.toggleSwitch {
+  background-color: #ccc;
+  position: absolute;
+  cursor: pointer;
+  border-radius: 6px;
+  bottom: 0;
+  left: 28px;
+  right: 0;
+  top: 0;
+  transition: background-color 0.4s;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
+
+  &:before {
+    background-color: #fff;
+    border-radius: 4px;
+    bottom: 2px;
+    content: '';
+    height: 14px;
+    left: 2px;
+    position: absolute;
+    transition: transform 0.4s;
+    width: 16px;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.addButton {
+  margin-left: 10px;
 }
