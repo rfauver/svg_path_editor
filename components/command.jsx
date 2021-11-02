@@ -76,15 +76,16 @@ export default function Command({
         />
         <div className={styles.toggleSwitch} />
       </label>
-      <button className={styles.addButton} onMouseDown={addCommandClicked}>
-        Add
-      </button>
       <button
-        className={styles.removeButton}
+        className={classnames(styles.button, styles.addButton)}
+        name='Add'
+        onMouseDown={addCommandClicked}
+      />
+      <button
+        className={classnames(styles.button, styles.removeButton)}
+        name='Remove'
         onMouseDown={removeCommandClicked}
-      >
-        Remove
-      </button>
+      />
     </div>
   );
 }
