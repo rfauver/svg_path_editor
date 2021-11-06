@@ -1,6 +1,8 @@
 .container {
   min-height: 100vh;
+  max-width: 1920px;
   padding: 0 50px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -34,6 +36,9 @@
 }
 
 .viewer {
+  svg path {
+    transition: d 300ms;
+  }
 }
 
 .view {
