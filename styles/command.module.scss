@@ -75,8 +75,11 @@
 
 .dropdown {
   width: 100px;
-  height: 19px;
   margin: 0 10px;
+  border: none;
+  padding: 4px;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
 }
 
 .dropdown,
