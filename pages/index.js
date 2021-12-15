@@ -82,6 +82,10 @@ export default function Home() {
         </div>
 
         <div className={classnames(styles.section, styles.viewer)}>
+          <div className={classnames(styles.coord, styles.coordXMin)}>0</div>
+          <div className={classnames(styles.coord, styles.coordYMin)}>0</div>
+          <div className={classnames(styles.coord, styles.coordXMax)}>100</div>
+          <div className={classnames(styles.coord, styles.coordYMax)}>100</div>
           <svg
             className={styles.view}
             viewBox='0 0 100 100'
