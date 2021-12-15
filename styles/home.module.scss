@@ -14,6 +14,9 @@
   grid-template-columns: repeat(2, 1fr);
   column-gap: 30px;
   width: 100%;
+  @media (max-width: 1060px) {
+    grid-template-columns: 1fr;
+  }
 }
 
 .section {
@@ -21,6 +24,7 @@
   border-radius: 20px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   padding: 38px;
+  margin: 10px 0;
 }
 
 .editor {
@@ -37,6 +41,9 @@
 
 .viewer {
   position: relative;
+  @media (max-width: 1060px) {
+    max-width: 600px;
+  }
 
   svg path {
     transition: d 300ms;
