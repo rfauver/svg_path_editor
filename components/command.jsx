@@ -17,6 +17,16 @@ export default function Command({
   const onInputChange = e =>
     updateInstructions(index, e.target.value.trimStart());
   const onCursorChange = e => setCursorPosition(e.target.selectionStart);
+  const addCommandPressed = e => {
+    if ([' ', 'Enter'].includes(e.key)) {
+      addCommand(index);
+    }
+  };
+  const removeCommandPressed = e => {
+    if ([' ', 'Enter', 'Backspace', 'Delete'].includes(e.key)) {
+      removeCommand(index);
+    }
+  };
   const addCommandClicked = () => addCommand(index);
   const removeCommandClicked = () => removeCommand(index);
   return (
@@ -80,11 +90,13 @@ export default function Command({
         className={classnames(styles.button, styles.addButton)}
         name='Add'
         onMouseDown={addCommandClicked}
+        onKeyDown={addCommandPressed}
       />
       <button
         className={classnames(styles.button, styles.removeButton)}
         name='Remove'
         onMouseDown={removeCommandClicked}
+        onKeyDown={removeCommandPressed}
       />
     </div>
   );
