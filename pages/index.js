@@ -40,6 +40,21 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
+      <h1 className={styles.heading}>SVG Path</h1>
+      <div className={styles.intro}>
+        <p>
+          Have you ever wondered about the long strings of letters and numbers
+          found in SVGs? It usually looks something like{' '}
+          <span className={styles.code}>
+            d="M156.58,239l-88.3,64.75c-10.59,7.06-18..."
+          </span>{' '}
+          and it can be hundreds or thousands of characters long.
+        </p>
+        <p>
+          This tool breaks down each component of the SVG path syntax to reveal
+          how it works.
+        </p>
+      </div>
       <main className={styles.main}>
         <div className={classnames(styles.section, styles.editor)}>
           <div>{SURROUNDING_TEXT[0]}</div>
