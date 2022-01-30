@@ -78,12 +78,17 @@ export default function Home() {
               value={fillColor}
               onChange={onFillColorChange}
             />
-            <input
-              className={styles.colorPicker}
-              type='color'
-              onChange={onColorPickerChange}
-              value={fillColor}
-            />
+            <span
+              className={styles.colorPickerWrapper}
+              style={{ background: fillColor }}
+            >
+              <input
+                className={styles.colorPicker}
+                type='color'
+                onChange={onColorPickerChange}
+                value={fillColor}
+              />
+            </span>
             {SURROUNDING_TEXT[2]}
           </div>
           {instructions.map((instruction, i) => {

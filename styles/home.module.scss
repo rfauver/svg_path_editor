@@ -75,12 +75,16 @@
   }
 }
 
-.colorPicker {
-  border: none;
-  width: 28px;
+.colorPickerWrapper {
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.2);
   position: relative;
-  top: 2px;
-  margin-left: -2px;
+  bottom: 1px;
+}
+
+.colorPicker {
+  opacity: 0;
+  width: 17px;
   cursor: pointer;
 }
 
