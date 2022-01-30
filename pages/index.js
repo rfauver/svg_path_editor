@@ -32,6 +32,17 @@ export default function Home() {
       ...instructions.slice(index + 1),
     ]);
   };
+  const [fillColor, setFillColor] = useState('#0070f3');
+  const onFillColorChange = e => {
+    let input = e.target.value.trimStart();
+    if (input[0] !== '#') {
+      input = '#' + input;
+    }
+    setFillColor(input);
+  };
+  const onColorPickerChange = e => {
+    setFillColor(e.target.value);
+  };
 
   return (
     <div className={styles.container}>
@@ -58,7 +69,23 @@ export default function Home() {
       <main className={styles.main}>
         <div className={classnames(styles.section, styles.editor)}>
           <div>{SURROUNDING_TEXT[0]}</div>
-          <div className={styles.indented}>{SURROUNDING_TEXT[1]}</div>
+          <div className={styles.indented}>
+            {SURROUNDING_TEXT[1]}
+            <input
+              className={styles.fillColor}
+              type='text'
+              spellCheck='false'
+              value={fillColor}
+              onChange={onFillColorChange}
+            />
+            <input
+              className={styles.colorPicker}
+              type='color'
+              onChange={onColorPickerChange}
+              value={fillColor}
+            />
+            {SURROUNDING_TEXT[2]}
+          </div>
           {instructions.map((instruction, i) => {
             const { id, partNames, activePartIndex } = getCommandInfo(
               instruction,
@@ -79,15 +106,16 @@ export default function Home() {
               />
             );
           })}
-          <div className={styles.indented}>{SURROUNDING_TEXT[2]}</div>
-          <div>{SURROUNDING_TEXT[3]}</div>
+          <div className={styles.indented}>{SURROUNDING_TEXT[3]}</div>
+          <div>{SURROUNDING_TEXT[4]}</div>
           <button
             onMouseDown={() =>
               navigator.clipboard.writeText(
                 [
-                  ...SURROUNDING_TEXT.slice(0, 2),
+                  SURROUNDING_TEXT[0],
+                  `${SURROUNDING_TEXT[1]}${fillColor}${SURROUNDING_TEXT[2]}`,
                   '    ' + instructions.join(' '),
-                  ...SURROUNDING_TEXT.slice(2),
+                  ...SURROUNDING_TEXT.slice(3),
                 ].join('\n')
               )
             }
@@ -107,7 +135,7 @@ export default function Home() {
             xmlns='http://www.w3.org/2000/svg'
             preserveAspectRatio='none'
           >
-            <path fill='#0070f3' d={instructions.join(' ')} />
+            <path fill={fillColor} d={instructions.join(' ')} />
           </svg>
         </div>
       </main>

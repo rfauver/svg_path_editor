@@ -60,6 +60,30 @@
   margin-left: 20px;
 }
 
+.fillColor {
+  padding: 4px;
+  border-radius: 4px;
+  width: 67px;
+  border: none;
+  background: unset;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  &:hover {
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
+    background-color: white;
+  }
+}
+
+.colorPicker {
+  border: none;
+  width: 28px;
+  position: relative;
+  top: 2px;
+  margin-left: -2px;
+  cursor: pointer;
+}
+
 .viewer {
   position: relative;
   @media (max-width: 1060px) {
