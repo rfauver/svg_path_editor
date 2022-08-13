@@ -54,6 +54,11 @@ export default function Home() {
       <h1 className={styles.heading}>SVG Path</h1>
       <div className={styles.intro}>
         <p>
+          SVGs paths are essentially a list of instructions of how to draw each
+          segment of the path. This tool allows you to create SVGs by editing
+          those instructions individually.
+        </p>
+        <p>
           Have you ever wondered about the long strings of letters and numbers
           found in SVGs? It usually looks something like{' '}
           <span className={styles.code}>
@@ -92,10 +97,13 @@ export default function Home() {
             {SURROUNDING_TEXT[2]}
           </div>
           {instructions.map((instruction, i) => {
-            const { id, partNames, activePartIndex } = getCommandInfo(
-              instruction,
-              cursorPosition
-            );
+            const {
+              id,
+              partNames,
+              activePartIndex,
+              relative,
+              infoString,
+            } = getCommandInfo(instruction, cursorPosition);
             return (
               <Command
                 key={i}
@@ -104,6 +112,8 @@ export default function Home() {
                 instruction={instruction}
                 partNames={partNames}
                 activePartIndex={activePartIndex}
+                relative={relative}
+                infoString={infoString}
                 setCursorPosition={setCursorPosition}
                 updateInstructions={updateInstructions}
                 addCommand={addCommand}
@@ -154,5 +164,7 @@ function getCommandInfo(string, cursorPosition) {
   const activePartIndex = (command.parts || []).findIndex(part =>
     (cursorPosition ? string.substring(0, cursorPosition) : '').match(part)
   );
-  return { ...command, id: string[0], activePartIndex };
+  const relative = string[0]?.toLowerCase() === string[0];
+  const infoString = relative ? command.infoRelative : command.infoAbsolute;
+  return { ...command, id: string[0], activePartIndex, relative, infoString };
 }

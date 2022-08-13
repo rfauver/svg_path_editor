@@ -9,6 +9,8 @@ export default function Command({
   instruction,
   partNames,
   activePartIndex,
+  relative,
+  infoString,
   setCursorPosition,
   updateInstructions,
   addCommand,
@@ -74,7 +76,7 @@ export default function Command({
           type='checkbox'
           id={`toggle-${index}`}
           className={styles.toggleCheckbox}
-          checked={instruction[0]?.toLowerCase() === instruction[0]}
+          checked={relative}
           onChange={e =>
             updateInstructions(
               index,
@@ -98,6 +100,8 @@ export default function Command({
         onMouseDown={removeCommandClicked}
         onKeyDown={removeCommandPressed}
       />
+      <span className={styles.info}>i</span>
+      <div className={styles.infoBox}>{infoString || ''}</div>
     </div>
   );
 }
