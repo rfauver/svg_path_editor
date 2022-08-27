@@ -87,8 +87,10 @@ export const COMMANDS = {
     name: 'Elliptical Arc Curve',
     parts: buildParts('A', 7),
     partNames: ['rx', 'ry', 'angle', 'large-arc-flag', 'sweep-flag', 'x', 'y'],
-    infoAbsolute: 'Draw an arc',
-    infoRelative: 'Draw an arc',
+    infoAbsolute:
+      'Draw an arc from the current position to x,y, with rx and ry as the radii of the ellipse, angle as the angle of rotation of the ellipse, 0 or 1 for the large-arc-flag to chose between small arc or large arc, and 0 or 1 for the sweep-flag to chose between the couterclockwise or clockwise arc',
+    infoRelative:
+      'Draw an arc from the current position to x units away horizontally and y units away vertically, with rx and ry as the radii of the ellipse, angle as the angle of rotation of the ellipse, 0 or 1 for the large-arc-flag to chose between small arc or large arc, and 0 or 1 for the sweep-flag to chose between the couterclockwise or clockwise arc',
   },
   Z: {
     name: 'Close Path',
