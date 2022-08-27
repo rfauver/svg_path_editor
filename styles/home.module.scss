@@ -56,6 +56,36 @@
   line-height: 18px;
 }
 
+.buttonRow {
+  margin-top: auto;
+  padding-top: 18px;
+  display: flex;
+
+  button {
+    cursor: pointer;
+    height: 30px;
+    width: 100px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #999;
+    svg {
+      height: 16px;
+    }
+    &:hover {
+      background-color: white;
+      box-shadow: 1px 1px 4px rgb(0 0 0 / 8%);
+    }
+  }
+}
+
+.copyButton {
+  // margin-left: auto;
+}
+
+.downloadButton {
+  margin-left: 10px;
+}
+
 .indented {
   margin-left: 20px;
 }

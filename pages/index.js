@@ -43,6 +43,33 @@ export default function Home() {
   const onColorPickerChange = e => {
     setFillColor(e.target.value);
   };
+  const svgText = () =>
+    [
+      SURROUNDING_TEXT[0],
+      `${SURROUNDING_TEXT[1]}${fillColor}${SURROUNDING_TEXT[2]}`,
+      '    ' + instructions.join(' '),
+      ...SURROUNDING_TEXT.slice(3),
+    ].join('\n');
+  const onCopyClicked = () => navigator.clipboard.writeText(svgText());
+  const onCopyPressed = e => {
+    if ([' ', 'Enter'].includes(e.key)) {
+      onCopyClicked();
+    }
+  };
+  const onDownloadClicked = () => {
+    const dataURI = `data:image/svg+xml,${encodeURIComponent(svgText())}`;
+    const link = document.createElement('a');
+    link.href = dataURI;
+    link.download = 'filename.svg';
+    document.body.appendChild(link);
+    link.click();
+    link.parentNode.removeChild(link);
+  };
+  const onDownloadPressed = e => {
+    if ([' ', 'Enter'].includes(e.key)) {
+      onDownloadClicked();
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -123,20 +150,22 @@ export default function Home() {
           })}
           <div className={styles.indented}>{SURROUNDING_TEXT[3]}</div>
           <div>{SURROUNDING_TEXT[4]}</div>
-          <button
-            onMouseDown={() =>
-              navigator.clipboard.writeText(
-                [
-                  SURROUNDING_TEXT[0],
-                  `${SURROUNDING_TEXT[1]}${fillColor}${SURROUNDING_TEXT[2]}`,
-                  '    ' + instructions.join(' '),
-                  ...SURROUNDING_TEXT.slice(3),
-                ].join('\n')
-              )
-            }
-          >
-            Copy
-          </button>
+          <div className={styles.buttonRow}>
+            <button
+              className={styles.copyButton}
+              onMouseDown={onCopyClicked}
+              onKeyDown={onCopyPressed}
+            >
+              Copy
+            </button>
+            <button
+              className={styles.downloadButton}
+              onMouseDown={onDownloadClicked}
+              onKeyDown={onDownloadPressed}
+            >
+              Download
+            </button>
+          </div>
         </div>
 
         <div className={classnames(styles.section, styles.viewer)}>
