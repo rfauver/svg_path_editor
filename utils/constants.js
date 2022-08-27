@@ -1,5 +1,5 @@
-const DIGIT = /(\+|-)?\d+/;
-const LAST_DIGIT = /(\+|-)?\d*/;
+const DIGIT = /(\+|-)?\d+(\.\d+)?/;
+const LAST_DIGIT = /(\+|-)?(\d+\.)?\d*/;
 const SEPARATOR = /\s*,?\s*/;
 
 function buildParts(id, length) {
