@@ -8,9 +8,15 @@ import styles from '../styles/home.module.scss';
 
 export default function Home() {
   const [instructions, setInstructions] = useState([
-    'M0,0',
-    'L0,50',
-    'L50,50',
+    'M45,0',
+    'L68,30',
+    'C50,50,55,50,70,75',
+    'L67,78',
+    'C50,70,40,80,53,97',
+    'L50,100',
+    'C30,75,30,60,57,68',
+    'L35,40',
+    'Q60,25,38,0',
     'Z',
   ]);
   const [cursorPosition, setCursorPosition] = useState(null);
@@ -74,28 +80,19 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
-        <link rel='icon' href='/favicon.ico' />
+        <title>SVG Path Editor</title>
+        <link
+          rel='icon'
+          href={`data:image/svg+xml,${encodeURIComponent(svgText())}`}
+        />
       </Head>
 
-      <h1 className={styles.heading}>SVG Path</h1>
+      <h1 className={styles.heading}>SVG Path Editor</h1>
       <div className={styles.intro}>
         <p>
-          SVGs paths are essentially a list of instructions of how to draw each
-          segment of the path. This tool allows you to create SVGs by editing
-          those instructions individually.
-        </p>
-        <p>
-          Have you ever wondered about the long strings of letters and numbers
-          found in SVGs? It usually looks something like{' '}
-          <span className={styles.code}>
-            d="M156.58,239l-88.3,64.75c-10.59,7.06-18..."
-          </span>{' '}
-          and it can be hundreds or thousands of characters long.
-        </p>
-        <p>
-          This tool breaks down each component of the SVG path syntax to reveal
-          how it works.
+          SVG paths are specified as a list of commands. Each command describes
+          a step along the path. This editor allows you to create an SVG by
+          editing the individual commands that describe its shape.
         </p>
       </div>
       <main className={styles.main}>
