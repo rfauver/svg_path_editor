@@ -1,6 +1,6 @@
 .container {
   min-height: 100vh;
-  max-width: 1920px;
+  max-width: 1500px;
   padding: 0 50px;
   margin: 0 auto;
   display: flex;
@@ -46,6 +46,9 @@
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   padding: 38px;
   margin: 10px 0;
+  @media (max-width: 1060px) {
+    max-width: 750px;
+  }
 }
 
 .editor {
@@ -120,9 +123,6 @@
 
 .viewer {
   position: relative;
-  @media (max-width: 1060px) {
-    max-width: 600px;
-  }
 
   svg path {
     transition: d 300ms;
