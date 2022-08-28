@@ -56,7 +56,12 @@ export default function Home() {
       '    ' + instructions.join(' '),
       ...SURROUNDING_TEXT.slice(3),
     ].join('\n');
-  const onCopyClicked = () => navigator.clipboard.writeText(svgText());
+  const [copyText, setCopyText] = useState('Copy');
+  const onCopyClicked = () => {
+    navigator.clipboard.writeText(svgText());
+    setCopyText('Copied!');
+    setTimeout(() => setCopyText('Copy'), 2000);
+  };
   const onCopyPressed = e => {
     if ([' ', 'Enter'].includes(e.key)) {
       onCopyClicked();
@@ -153,7 +158,7 @@ export default function Home() {
               onMouseDown={onCopyClicked}
               onKeyDown={onCopyPressed}
             >
-              Copy
+              {copyText}
             </button>
             <button
               className={styles.downloadButton}
