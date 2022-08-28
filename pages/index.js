@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Head from 'next/head';
+import Script from 'next/script';
 import Command from '../components/command';
 import { COMMANDS, SURROUNDING_TEXT } from '../utils/constants';
 import classnames from 'classnames';
@@ -71,7 +72,7 @@ export default function Home() {
     const dataURI = `data:image/svg+xml,${encodeURIComponent(svgText())}`;
     const link = document.createElement('a');
     link.href = dataURI;
-    link.download = 'filename.svg';
+    link.download = 'path_editor.svg';
     document.body.appendChild(link);
     link.click();
     link.parentNode.removeChild(link);
@@ -91,6 +92,23 @@ export default function Home() {
           href={`data:image/svg+xml,${encodeURIComponent(svgText())}`}
         />
       </Head>
+      {/* Fathom - simple website analytics */}
+      {process.env.VERCEL_ENV === 'production' && (
+        <Script>
+          {`(function(f, a, t, h, o, m){
+            a[h]=a[h]||function(){
+              (a[h].q=a[h].q||[]).push(arguments)
+            };
+            o=f.createElement('script'),
+            m=f.getElementsByTagName('script')[0];
+            o.async=1; o.src=t; o.id='fathom-script';
+            m.parentNode.insertBefore(o,m)
+          })(document, window, '//fathom-rfauver.herokuapp.com/tracker.js', 'fathom');
+          fathom('set', 'siteId', 'RBTTM');
+          fathom('trackPageview');`}
+        </Script>
+      )}
+      {/* / Fathom */}
 
       <h1 className={styles.heading}>SVG Path Editor</h1>
       <div className={styles.intro}>
