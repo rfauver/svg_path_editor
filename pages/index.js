@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 import Command from '../components/command';
@@ -21,17 +21,27 @@ export default function Home() {
     'Z',
   ]);
   const [cursorPosition, setCursorPosition] = useState(null);
+  const [indexToFocus, setIndexToFocus] = useState(null);
   const updateInstructions = (i, instruction) => {
     const newInstructions = [...instructions];
     newInstructions[i] = instruction;
     setInstructions(newInstructions);
   };
+  useEffect(() => {
+    if (indexToFocus === null) return;
+
+    const command = document.querySelectorAll('.instruction')[indexToFocus];
+    command?.focus();
+
+    setIndexToFocus(null);
+  }, [indexToFocus]);
   const addCommand = index => {
     setInstructions([
       ...instructions.slice(0, index + 1),
       'L',
       ...instructions.slice(index + 1),
     ]);
+    setIndexToFocus(index + 1);
   };
   const removeCommand = index => {
     setInstructions([

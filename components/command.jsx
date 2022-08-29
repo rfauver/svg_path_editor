@@ -18,6 +18,12 @@ export default function Command({
 }) {
   const onInputChange = e =>
     updateInstructions(index, e.target.value.trimStart());
+  const onKeyUp = e => {
+    if (e.key === 'Enter') {
+      addCommand(index);
+    }
+    onCursorChange(e);
+  };
   const onCursorChange = e => setCursorPosition(e.target.selectionStart);
   const addCommandPressed = e => {
     if ([' ', 'Enter'].includes(e.key)) {
@@ -34,10 +40,10 @@ export default function Command({
   return (
     <div className={styles.component}>
       <input
-        className={styles.instruction}
+        className={classnames('instruction', styles.instruction)}
         value={instruction}
         onChange={onInputChange}
-        onKeyUp={onCursorChange}
+        onKeyUp={onKeyUp}
         onMouseUp={onCursorChange}
         onFocus={onCursorChange}
       />
