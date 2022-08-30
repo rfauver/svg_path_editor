@@ -107,7 +107,7 @@ export default function Home() {
         />
       </Head>
       {/* Fathom - simple website analytics */}
-      {process.env.VERCEL_ENV === 'production' && (
+      {process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' && (
         <Script>
           {`(function(f, a, t, h, o, m){
             a[h]=a[h]||function(){
