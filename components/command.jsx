@@ -46,6 +46,7 @@ export default function Command({
         onKeyUp={onKeyUp}
         onMouseUp={onCursorChange}
         onFocus={onCursorChange}
+        aria-label={`path command ${index + 1}`}
       />
       {partNames && (
         <div className={styles.annotation}>

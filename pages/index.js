@@ -97,6 +97,10 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>SVG Path Editor</title>
+        <meta
+          name='description'
+          content='Interactive tool to edit an SVG by editing the path commands that describe its shape'
+        />
         <link
           rel='icon'
           href={`data:image/svg+xml,${encodeURIComponent(svgText())}`}
@@ -139,6 +143,7 @@ export default function Home() {
               spellCheck='false'
               value={fillColor}
               onChange={onFillColorChange}
+              aria-label='hex color'
             />
             <span
               className={styles.colorPickerWrapper}
@@ -149,6 +154,7 @@ export default function Home() {
                 type='color'
                 onChange={onColorPickerChange}
                 value={fillColor}
+                aria-label='color picker'
               />
             </span>
             {SURROUNDING_TEXT[2]}
