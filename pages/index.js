@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 import Command from '../components/command';
+import CommandModel from '../models/command_model';
 import {
   COMMANDS,
   SURROUNDING_TEXT,
@@ -98,7 +99,18 @@ export default function Home() {
     }
   };
 
-  const pathEnds = getPathEnds(instructions);
+  let previousEndPoint, previousMEndPoint;
+  const commands = instructions.map(instruction => {
+    const command = new CommandModel(
+      instruction,
+      cursorPosition,
+      previousEndPoint,
+      previousMEndPoint
+    );
+    previousEndPoint = command.endPoint();
+    if (command.isA('M')) previousMEndPoint = previousEndPoint;
+    return command;
+  });
 
   return (
     <div className={styles.container}>
@@ -184,31 +196,17 @@ export default function Home() {
             </span>
             {SURROUNDING_TEXT[2]}
           </div>
-          {instructions.map((instruction, i) => {
-            const {
-              id,
-              partNames,
-              activePartIndex,
-              relative,
-              infoString,
-            } = getCommandInfo(instruction, cursorPosition);
-            return (
-              <Command
-                key={i}
-                id={id}
-                index={i}
-                instruction={instruction}
-                partNames={partNames}
-                activePartIndex={activePartIndex}
-                relative={relative}
-                infoString={infoString}
-                setCursorPosition={setCursorPosition}
-                updateInstructions={updateInstructions}
-                addCommand={addCommand}
-                removeCommand={removeCommand}
-              />
-            );
-          })}
+          {commands.map((command, index) => (
+            <Command
+              key={index}
+              index={index}
+              command={command}
+              setCursorPosition={setCursorPosition}
+              updateInstructions={updateInstructions}
+              addCommand={addCommand}
+              removeCommand={removeCommand}
+            />
+          ))}
           <div className={styles.indented}>{SURROUNDING_TEXT[3]}</div>
           <div>{SURROUNDING_TEXT[4]}</div>
           <div className={styles.buttonRow}>
@@ -240,9 +238,7 @@ export default function Home() {
             xmlns='http://www.w3.org/2000/svg'
           >
             <path fill={fillColor} d={instructions.join(' ')} />
-            {instructions.map((_, i) =>
-              getPathHighlight(instructions, pathEnds, i)
-            )}
+            {commands.map(getPathHighlight)}
           </svg>
         </div>
       </main>
@@ -284,53 +280,28 @@ export default function Home() {
   );
 }
 
-function getCommandInfo(string, cursorPosition) {
-  const command = COMMANDS[string[0]?.toUpperCase()];
-  if (!command) return {};
-  const activePartIndex = (command.parts || []).findIndex(part =>
-    (cursorPosition ? string.substring(0, cursorPosition) : '').match(part)
-  );
-  const relative = string[0]?.toLowerCase() === string[0];
-  const infoString = relative ? command.infoRelative : command.infoAbsolute;
-  return { ...command, id: string[0], activePartIndex, relative, infoString };
-}
-
-function getPathHighlight(instructions, pathEnds, index) {
+function getPathHighlight(command, index) {
+  if (command.isA('M')) {
+    const [x, y] = command.endPoint() || [0, 0];
+    return (
+      <circle
+        className={`highlight-${index}`}
+        cx={x}
+        cy={y}
+        r='1'
+        fill='red'
+        key={index}
+      />
+    );
+  }
   let pathString = '';
-  if (instructions[index][0]?.toUpperCase() === 'M') {
-    const end = getEndPoint(instructions[index]);
-    if (end) {
-      let x = end[0];
-      let y = end[1];
-      if (instructions[index][0]?.toLowerCase() === instructions[index][0]) {
-        const previousEnd = pathEnds[index - 1] ? pathEnds[index - 1] : [0, 0];
-        x += previousEnd[0];
-        y += previousEnd[1];
-      }
-      return (
-        <circle
-          className={`highlight-${index}`}
-          cx={x}
-          cy={y}
-          r='1'
-          fill='red'
-        />
-      );
-    }
-  } else if (instructions[index - 1]) {
-    const previousEndPoint = pathEnds[index - 1];
-    if (previousEndPoint) {
-      if (instructions[index][0]?.toUpperCase() === 'Z') {
-        const previousMIndex = instructions
-          .map(
-            (instruction, i) =>
-              instruction[0]?.toUpperCase() === 'M' && i < index
-          )
-          .lastIndexOf(true);
-        pathString = `M${previousEndPoint} L${pathEnds[previousMIndex || 0]}`;
-      } else {
-        pathString = `M${previousEndPoint} ${instructions[index]}`;
-      }
+  if (command.previousEndPoint) {
+    if (command.isA('Z')) {
+      pathString = `M${command.previousEndPoint} L${
+        command.previousMEndPoint || [0, 0]
+      }`;
+    } else {
+      pathString = `M${command.previousEndPoint} ${command.instruction}`;
     }
   }
   return (
@@ -341,37 +312,7 @@ function getPathHighlight(instructions, pathEnds, index) {
       strokeWidth='1'
       strokeDasharray='2,1.2'
       d={pathString}
+      key={index}
     />
   );
-}
-
-function getPathEnds(instructions) {
-  const pathEnds = [];
-  instructions.forEach((instruction, i) => {
-    if (instruction[0]?.toUpperCase() === 'Z') {
-      const previousMIndex = instructions
-        .map((instruction, j) => instruction[0]?.toUpperCase() === 'M' && j < i)
-        .lastIndexOf(true);
-      pathEnds.push(pathEnds[previousMIndex]);
-      return;
-    }
-
-    const end = getEndPoint(instruction);
-
-    if (!end || instruction[0].toUpperCase() === instruction[0]) {
-      pathEnds.push(end);
-    } else {
-      const previousEnd = pathEnds[i - 1] ? pathEnds[i - 1] : [0, 0];
-      pathEnds.push([end[0] + previousEnd[0], end[1] + previousEnd[1]]);
-    }
-  });
-  return pathEnds;
-}
-
-function getEndPoint(instruction) {
-  const match = instruction.match(
-    new RegExp(`(${DIGIT.source})${SEPARATOR.source}(${DIGIT.source})$`)
-  );
-  if (!match) return null;
-  return match.slice(1, 3).map(point => parseFloat(point));
 }

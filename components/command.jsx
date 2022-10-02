@@ -4,13 +4,8 @@ import classnames from 'classnames';
 import styles from '../styles/command.module.scss';
 
 export default function Command({
-  id,
+  command,
   index,
-  instruction,
-  partNames,
-  activePartIndex,
-  relative,
-  infoString,
   setCursorPosition,
   updateInstructions,
   addCommand,
@@ -41,25 +36,25 @@ export default function Command({
     <div className={classnames(`command-${index}`, styles.component)}>
       <input
         className={classnames('instruction', styles.instruction)}
-        value={instruction}
+        value={command.instruction}
         onChange={onInputChange}
         onKeyUp={onKeyUp}
         onMouseUp={onCursorChange}
         onFocus={onCursorChange}
         aria-label={`path command ${index + 1}`}
       />
-      {partNames && (
+      {command.properties?.partNames && (
         <div className={styles.annotation}>
           (
-          {partNames.map((partName, i) => (
+          {command.properties.partNames.map((partName, i) => (
             <span
               key={i}
               className={classnames(styles.partName, {
-                [styles.partNameActive]: i === activePartIndex,
+                [styles.partNameActive]: i === command.activePartIndex(),
               })}
             >
               {partName}
-              {i < partNames.length - 1 ? ', ' : ''}
+              {i < command.properties.partNames.length - 1 ? ', ' : ''}
             </span>
           ))}
           )
@@ -69,10 +64,10 @@ export default function Command({
         className={styles.dropdown}
         name='path'
         onChange={e => updateInstructions(index, e.target.value)}
-        value={id?.toUpperCase()}
+        value={command.letter?.toUpperCase()}
       >
-        {Object.entries(COMMANDS).map(([commandId, command]) => (
-          <option key={commandId} value={commandId}>
+        {Object.entries(COMMANDS).map(([commandLetter, command]) => (
+          <option key={commandLetter} value={commandLetter}>
             {command.name}
           </option>
         ))}
@@ -83,13 +78,13 @@ export default function Command({
           type='checkbox'
           id={`toggle-${index}`}
           className={styles.toggleCheckbox}
-          checked={relative}
+          checked={command.isRelative()}
           onChange={e =>
             updateInstructions(
               index,
               e.target.checked
-                ? instruction.toLowerCase()
-                : instruction.toUpperCase()
+                ? command.instruction.toLowerCase()
+                : command.instruction.toUpperCase()
             )
           }
         />
@@ -108,7 +103,7 @@ export default function Command({
         onKeyDown={removeCommandPressed}
       />
       <span className={styles.info}>i</span>
-      <div className={styles.infoBox}>{infoString || ''}</div>
+      <div className={styles.infoBox}>{command.infoString() || ''}</div>
     </div>
   );
 }
