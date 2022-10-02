@@ -1,6 +1,6 @@
-const DIGIT = /(\+|-)?\d+(\.\d+)?/;
-const LAST_DIGIT = /(\+|-)?(\d+\.)?\d*/;
-const SEPARATOR = /\s*,?\s*/;
+export const DIGIT = /(?:\+|-)?\d+(?:\.\d+)?/;
+const LAST_DIGIT = /(?:\+|-)?(?:\d+\.)?\d*/;
+export const SEPARATOR = /\s*,?\s*/;
 
 function buildParts(id, length) {
   return [...new Array(length)].map(

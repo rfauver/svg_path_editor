@@ -38,7 +38,7 @@ export default function Command({
   const addCommandClicked = () => addCommand(index);
   const removeCommandClicked = () => removeCommand(index);
   return (
-    <div className={styles.component}>
+    <div className={classnames(`command-${index}`, styles.component)}>
       <input
         className={classnames('instruction', styles.instruction)}
         value={instruction}
