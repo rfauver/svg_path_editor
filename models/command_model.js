@@ -46,7 +46,25 @@ export default class CommandModel {
         ? this.previousEndPoint
         : [0, 0];
 
-    const match = this.instruction.match(
+    let match;
+    if (this.isA('H')) {
+      match = this.instruction.match(new RegExp(`(${DIGIT.source})$`));
+      if (!match) return null;
+      return [
+        parseFloat(match[1]) + relativeOffset[0],
+        this.previousEndPoint?.[1] || 0,
+      ];
+    }
+    if (this.isA('V')) {
+      match = this.instruction.match(new RegExp(`(${DIGIT.source})$`));
+      if (!match) return null;
+      return [
+        this.previousEndPoint?.[0] || 0,
+        parseFloat(match[1]) + relativeOffset[1],
+      ];
+    }
+
+    match = this.instruction.match(
       new RegExp(`(${DIGIT.source})${SEPARATOR.source}(${DIGIT.source})$`)
     );
     if (!match) return null;
