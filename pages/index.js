@@ -50,6 +50,11 @@ export default function Home() {
     setIndexToFocus(index + 1);
   };
   const removeCommand = index => {
+    if (instructions.length <= 1) {
+      setInstructions(['M']);
+      setIndexToFocus(0);
+      return;
+    }
     setInstructions([
       ...instructions.slice(0, index),
       ...instructions.slice(index + 1),
