@@ -1,0 +1,38 @@
+.component {
+  position: relative;
+
+  svg path {
+    transition: d 300ms;
+  }
+  svg circle {
+    transition: cx 300ms, cy 300ms;
+  }
+}
+
+.coord {
+  position: absolute;
+}
+
+.coordXMin {
+  top: -21px;
+}
+
+.coordYMin {
+  left: -14px;
+  top: -3px;
+}
+
+.coordXMax {
+  top: -21px;
+  right: 0;
+}
+
+.coordYMax {
+  bottom: 1px;
+  left: -30px;
+}
+
+.view {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+}
