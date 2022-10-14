@@ -1,27 +1,17 @@
 import { useState, useEffect } from 'react';
 import Editor from '../components/editor';
+import ExampleShapes from '../components/example_shapes';
 import Head from '../components/head';
 import LearnMore from '../components/learn_more';
 import Viewer from '../components/viewer';
 import CommandModel from '../models/command_model';
-import { SURROUNDING_TEXT } from '../utils/constants';
+import { SURROUNDING_TEXT, SHAPES } from '../utils/constants';
 import classnames from 'classnames';
 
 import styles from '../styles/home.module.scss';
 
 export default function Home() {
-  const [instructions, setInstructions] = useState([
-    'M45,0',
-    'L68,30',
-    'C50,50,55,50,70,75',
-    'L67,78',
-    'C50,70,40,80,53,97',
-    'L50,100',
-    'C30,75,30,60,57,68',
-    'L35,40',
-    'Q60,25,38,0',
-    'Z',
-  ]);
+  const [instructions, setInstructions] = useState(SHAPES.QUARTER_NOTE);
   const [fillColor, setFillColor] = useState('#0070f3');
   const [cursorPosition, setCursorPosition] = useState(null);
   const [indexToFocus, setIndexToFocus] = useState(null);
@@ -89,6 +79,7 @@ export default function Home() {
           editing the individual commands that describe its shape.
         </p>
       </div>
+      <ExampleShapes fillColor={fillColor} setInstructions={setInstructions} />
       <main className={classnames('main', styles.main)}>
         <div className={styles.section}>
           <Editor

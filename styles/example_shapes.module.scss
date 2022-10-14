@@ -1,0 +1,16 @@
+.component {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.shape {
+  width: 60px;
+  height: 60px;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  padding: 10px;
+  margin-right: 16px;
+  cursor: pointer;
+}
