@@ -9,8 +9,18 @@
   height: 60px;
   background-color: #f2f2f2;
   border-radius: 10px;
+  border: none;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   padding: 10px;
   margin-right: 16px;
   cursor: pointer;
+
+  &:hover {
+    background-color: white;
+  }
+
+  &:active {
+    transform: scale(0.95);
+    box-shadow: 1px 1px 4px rgb(0 0 0 / 25%);
+  }
 }

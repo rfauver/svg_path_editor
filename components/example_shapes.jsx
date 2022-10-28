@@ -7,14 +7,14 @@ export default function ExampleShapes({ fillColor, setInstructions }) {
     <div className={styles.component}>
       {Object.entries(SHAPES).map(([name, shapeInstructions]) => {
         return (
-          <div
+          <button
             className={styles.shape}
             onClick={() => setInstructions(shapeInstructions)}
           >
             <svg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'>
               <path fill={fillColor} d={shapeInstructions.join(' ')} />
             </svg>
-          </div>
+          </button>
         );
       })}
     </div>
