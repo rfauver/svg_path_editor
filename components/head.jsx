@@ -10,8 +10,10 @@ export default function Head({ instructions, svgText }) {
           name='description'
           content='Interactive tool to edit an SVG by editing the path commands that describe its shape'
         />
+        <link rel='icon' type='image/x-icon' href='/favicon.ico' />
         <link
           rel='icon'
+          type='image/svg+xml'
           href={`data:image/svg+xml,${encodeURIComponent(svgText)}`}
         />
 

@@ -8,6 +8,7 @@ export default function ExampleShapes({ fillColor, setInstructions }) {
       {Object.entries(SHAPES).map(([name, shapeInstructions]) => {
         return (
           <button
+            key={name}
             className={styles.shape}
             onClick={() => setInstructions(shapeInstructions)}
           >
