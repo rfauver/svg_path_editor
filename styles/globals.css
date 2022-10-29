@@ -1,13 +1,41 @@
+:root {
+  --background-color: white;
+  --panel-color: #f2f2f2;
+  --input-color: var(--background-color);
+  --text-color: #222;
+  --link-color: #0070f3;
+  --toggle-disabled-color: #ccc;
+  --info-color: #777;
+  --input-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
+  --annotation-shadow: 3px 3px 4px 1px rgba(0, 0, 0, 0.16);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #2a303a;
+    --panel-color: #37393e;
+    --input-color: #252424;
+    --text-color: #eee;
+    --link-color: #5da4f6;
+    --toggle-disabled-color: var(--input-color);
+    --info-color: #ccc;
+    --input-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    --annotation-shadow: 4px 4px 8px 1px rgba(0, 0, 0, 0.4);
+  }
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 a {
-  color: #0070f3;
+  color: var(--link-color);
   text-decoration: none;
 }
 

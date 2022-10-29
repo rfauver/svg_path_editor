@@ -41,7 +41,7 @@
 }
 
 .section {
-  background-color: #f2f2f2;
+  background-color: var(--panel-color);
   border-radius: 20px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   padding: 38px;

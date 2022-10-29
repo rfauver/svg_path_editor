@@ -10,12 +10,17 @@
     font-size: 16px;
     border-radius: 4px;
     border: 1px solid #999;
+    background-color: var(--panel-color);
+    color: var(--text-color);
     svg {
       height: 16px;
     }
     &:hover {
-      background-color: white;
-      box-shadow: 1px 1px 4px rgb(0 0 0 / 8%);
+      background-color: var(--background-color);
+      box-shadow: var(--input-shadow);
+    }
+    &:active {
+      transform: scale(0.95);
     }
   }
 }
