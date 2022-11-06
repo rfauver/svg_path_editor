@@ -2,6 +2,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  min-width: 503px;
 
   &:hover,
   &:focus-within {
@@ -10,7 +11,7 @@
     .addButton,
     .removeButton,
     .info {
-      visibility: visible;
+      display: block;
     }
     .instruction {
       box-shadow: var(--input-shadow);
@@ -88,7 +89,7 @@
 .addButton,
 .removeButton,
 .info {
-  visibility: hidden;
+  display: none;
 }
 
 .relativeToggle {

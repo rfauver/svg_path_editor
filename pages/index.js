@@ -95,7 +95,7 @@ export default function Home() {
           />
         </div>
 
-        <div className={styles.section}>
+        <div className={classnames(styles.section, styles.viewer)}>
           <Viewer commands={commands} fillColor={fillColor} />
         </div>
       </main>
