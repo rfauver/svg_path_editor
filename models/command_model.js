@@ -72,4 +72,81 @@ export default class CommandModel {
       .slice(1, 3)
       .map((point, i) => parseFloat(point) + relativeOffset[i]);
   };
+
+  #toRelativeX = x =>
+    +(parseFloat(x) - (this.previousEndPoint?.[0] || 0)).toFixed(2);
+  #toRelativeY = y =>
+    +(parseFloat(y) - (this.previousEndPoint?.[1] || 0)).toFixed(2);
+  #toAbsoluteX = x =>
+    +(parseFloat(x) + (this.previousEndPoint?.[0] || 0)).toFixed(2);
+  #toAbsoluteY = y =>
+    +(parseFloat(y) + (this.previousEndPoint?.[1] || 0)).toFixed(2);
+
+  relativeInstruction = () => {
+    if (this.isRelative()) return this.instruction;
+
+    let newInstruction = `${this.letter.toLowerCase()}${this.instruction.substring(
+      1
+    )}`;
+
+    switch (this.letter) {
+      case 'H':
+        return newInstruction.replace(DIGIT, x => this.#toRelativeX(x));
+      case 'V':
+        return newInstruction.replace(DIGIT, y => this.#toRelativeY(y));
+      case 'A':
+        return newInstruction
+          .trim()
+          .replace(
+            new RegExp(
+              `(${DIGIT.source})(${SEPARATOR.source})(${DIGIT.source})$`
+            ),
+            (_, x, separator, y) =>
+              `${this.#toRelativeX(x)}${separator}${this.#toRelativeY(y)}`
+          );
+      default:
+        return newInstruction.replace(
+          new RegExp(
+            `(${DIGIT.source})(${SEPARATOR.source})(${DIGIT.source})`,
+            'g'
+          ),
+          (_, x, separator, y) =>
+            `${this.#toRelativeX(x)}${separator}${this.#toRelativeY(y)}`
+        );
+    }
+  };
+
+  absoluteInstruction = () => {
+    if (!this.letter || !this.isRelative()) return this.instruction;
+
+    let newInstruction = `${this.letter.toUpperCase()}${this.instruction.substring(
+      1
+    )}`;
+
+    switch (this.letter) {
+      case 'h':
+        return newInstruction.replace(DIGIT, x => this.#toAbsoluteX(x));
+      case 'v':
+        return newInstruction.replace(DIGIT, y => this.#toAbsoluteY(y));
+      case 'a':
+        return newInstruction
+          .trim()
+          .replace(
+            new RegExp(
+              `(${DIGIT.source})(${SEPARATOR.source})(${DIGIT.source})$`
+            ),
+            (_, x, separator, y) =>
+              `${this.#toAbsoluteX(x)}${separator}${this.#toAbsoluteY(y)}`
+          );
+      default:
+        return newInstruction.replace(
+          new RegExp(
+            `(${DIGIT.source})(${SEPARATOR.source})(${DIGIT.source})`,
+            'g'
+          ),
+          (_, x, separator, y) =>
+            `${this.#toAbsoluteX(x)}${separator}${this.#toAbsoluteY(y)}`
+        );
+    }
+  };
 }

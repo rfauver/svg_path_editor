@@ -88,6 +88,7 @@ export default function Home() {
             svgText={svgText}
             setFillColor={setFillColor}
             setCursorPosition={setCursorPosition}
+            setInstructions={setInstructions}
             updateInstructions={updateInstructions}
             addCommand={addCommand}
             removeCommand={removeCommand}

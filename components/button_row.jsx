@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import styles from '../styles/button_row.module.scss';
 
-export default function ButtonRow({ svgText }) {
+export default function ButtonRow({ svgText, commands, setInstructions }) {
   const [copyText, setCopyText] = useState('Copy');
   const [copyTimeout, setCopyTimeout] = useState(null);
   const onCopyClicked = e => {
@@ -11,11 +11,6 @@ export default function ButtonRow({ svgText }) {
     if (copyTimeout) clearTimeout(copyTimeout);
     setCopyText('Copied!');
     setCopyTimeout(setTimeout(() => setCopyText('Copy'), 2000));
-  };
-  const onCopyPressed = e => {
-    if ([' ', 'Enter'].includes(e.key)) {
-      onCopyClicked();
-    }
   };
   const onDownloadClicked = e => {
     if (e && e.button !== 0) return;
@@ -27,25 +22,49 @@ export default function ButtonRow({ svgText }) {
     link.click();
     link.parentNode.removeChild(link);
   };
-  const onDownloadPressed = e => {
+  const onAbsoluteClicked = e => {
+    if (e && e.button !== 0) return;
+    setInstructions(commands.map(command => command.absoluteInstruction()));
+  };
+  const onRelativeClicked = e => {
+    if (e && e.button !== 0) return;
+    setInstructions(commands.map(command => command.relativeInstruction()));
+  };
+
+  const onPress = clickHandler => e => {
     if ([' ', 'Enter'].includes(e.key)) {
-      onDownloadClicked();
+      clickHandler();
     }
   };
 
   return (
     <div className={styles.component}>
       <button
-        className={styles.copyButton}
-        onMouseDown={onCopyClicked}
-        onKeyDown={onCopyPressed}
+        name='Convert to Absolute'
+        onClick={onAbsoluteClicked}
+        onKeyDown={onPress(onAbsoluteClicked)}
+      >
+        Convert to Absolute
+      </button>
+      <button
+        name='Convert to Relative'
+        onClick={onRelativeClicked}
+        onKeyDown={onPress(onRelativeClicked)}
+      >
+        Convert to Relative
+      </button>
+
+      <button
+        name='Copy'
+        onClick={onCopyClicked}
+        onKeyDown={onPress(onCopyClicked)}
       >
         {copyText}
       </button>
       <button
-        className={styles.downloadButton}
-        onMouseDown={onDownloadClicked}
-        onKeyDown={onDownloadPressed}
+        name='Download'
+        onClick={onDownloadClicked}
+        onKeyDown={onPress(onDownloadClicked)}
       >
         Download
       </button>

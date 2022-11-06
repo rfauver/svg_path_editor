@@ -11,6 +11,7 @@ export default function Editor({
   svgText,
   setFillColor,
   setCursorPosition,
+  setInstructions,
   updateInstructions,
   addCommand,
   removeCommand,
@@ -36,7 +37,11 @@ export default function Editor({
       ))}
       <div className={styles.indented}>{SURROUNDING_TEXT[3]}</div>
       <div>{SURROUNDING_TEXT[4]}</div>
-      <ButtonRow svgText={svgText} />
+      <ButtonRow
+        svgText={svgText}
+        commands={commands}
+        setInstructions={setInstructions}
+      />
     </div>
   );
 }

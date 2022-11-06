@@ -5,15 +5,18 @@
 
   button {
     cursor: pointer;
-    height: 30px;
-    width: 100px;
+    flex: 1;
     font-size: 16px;
+    padding: 4px 6px;
     border-radius: 4px;
     border: 1px solid #999;
     background-color: var(--panel-color);
     color: var(--text-color);
     svg {
       height: 16px;
+    }
+    &:not(:first-child) {
+      margin-left: 10px;
     }
     &:hover {
       background-color: var(--background-color);
@@ -23,11 +26,4 @@
       transform: scale(0.95);
     }
   }
-}
-
-.copyButton {
-}
-
-.downloadButton {
-  margin-left: 10px;
 }
