@@ -46,7 +46,7 @@ export default function Head({ instructions, svgText }) {
             m=f.getElementsByTagName('script')[0];
             o.async=1; o.src=t; o.id='fathom-script';
             m.parentNode.insertBefore(o,m)
-          })(document, window, '//fathom-rfauver.herokuapp.com/tracker.js', 'fathom');
+          })(document, window, '//fathom-rfauver.fly.dev/tracker.js', 'fathom');
           fathom('set', 'siteId', 'RBTTM');
           fathom('trackPageview');`}
         </NextScript>
