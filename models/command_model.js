@@ -29,11 +29,20 @@ export default class CommandModel {
     );
   };
 
+  setPartValues = values => {
+    this.partValues = values;
+  };
+
   infoString = () => {
     if (!this.properties) return '';
+
+    const values = this.properties.partNames?.map((partName, i) =>
+      this.partValues?.[i] ? this.partValues[i] : partName
+    );
+
     return this.isRelative()
-      ? this.properties.infoRelative
-      : this.properties.infoAbsolute;
+      ? this.properties.infoRelative(values)
+      : this.properties.infoAbsolute(values);
   };
 
   endPoint = () => {
@@ -48,7 +57,7 @@ export default class CommandModel {
 
     let match;
     if (this.isA('H')) {
-      match = this.instruction.match(new RegExp(`(${DIGIT.source})$`));
+      match = this.instruction.match(new RegExp(`${DIGIT.source}$`));
       if (!match) return null;
       return [
         parseFloat(match[1]) + relativeOffset[0],
@@ -56,7 +65,7 @@ export default class CommandModel {
       ];
     }
     if (this.isA('V')) {
-      match = this.instruction.match(new RegExp(`(${DIGIT.source})$`));
+      match = this.instruction.match(new RegExp(`${DIGIT.source}$`));
       if (!match) return null;
       return [
         this.previousEndPoint?.[0] || 0,
@@ -65,7 +74,7 @@ export default class CommandModel {
     }
 
     match = this.instruction.match(
-      new RegExp(`(${DIGIT.source})${SEPARATOR.source}(${DIGIT.source})$`)
+      new RegExp(`${DIGIT.source}${SEPARATOR.source}${DIGIT.source}$`)
     );
     if (!match) return null;
     return match
@@ -98,16 +107,14 @@ export default class CommandModel {
         return newInstruction
           .trim()
           .replace(
-            new RegExp(
-              `(${DIGIT.source})(${SEPARATOR.source})(${DIGIT.source})$`
-            ),
+            new RegExp(`${DIGIT.source}(${SEPARATOR.source})${DIGIT.source}$`),
             (_, x, separator, y) =>
               `${this.#toRelativeX(x)}${separator}${this.#toRelativeY(y)}`
           );
       default:
         return newInstruction.replace(
           new RegExp(
-            `(${DIGIT.source})(${SEPARATOR.source})(${DIGIT.source})`,
+            `${DIGIT.source}(${SEPARATOR.source})${DIGIT.source}`,
             'g'
           ),
           (_, x, separator, y) =>
@@ -132,16 +139,14 @@ export default class CommandModel {
         return newInstruction
           .trim()
           .replace(
-            new RegExp(
-              `(${DIGIT.source})(${SEPARATOR.source})(${DIGIT.source})$`
-            ),
+            new RegExp(`${DIGIT.source}(${SEPARATOR.source})${DIGIT.source}$`),
             (_, x, separator, y) =>
               `${this.#toAbsoluteX(x)}${separator}${this.#toAbsoluteY(y)}`
           );
       default:
         return newInstruction.replace(
           new RegExp(
-            `(${DIGIT.source})(${SEPARATOR.source})(${DIGIT.source})`,
+            `${DIGIT.source}(${SEPARATOR.source})${DIGIT.source}`,
             'g'
           ),
           (_, x, separator, y) =>

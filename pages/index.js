@@ -64,6 +64,14 @@ export default function Home() {
     );
     previousEndPoint = command.endPoint();
     if (command.isA('M')) previousMEndPoint = previousEndPoint;
+
+    const match = command.instruction.match(
+      command.properties?.parts?.[command.properties.parts.length - 1]
+    );
+    if (match) {
+      command.setPartValues(match.slice(1));
+    }
+
     return command;
   });
 
