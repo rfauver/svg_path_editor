@@ -1,7 +1,9 @@
 import NextHead from 'next/head';
 import NextScript from 'next/script';
+import getConfig from 'next/config';
 
 export default function Head({ instructions, svgText }) {
+  const { publicRuntimeConfig } = getConfig();
   return (
     <>
       <NextHead>
@@ -37,8 +39,8 @@ export default function Head({ instructions, svgText }) {
       </NextHead>
       {/* Fathom - simple website analytics */}
       {process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
-        process.env.FATHOM_DOMAIN &&
-        process.env.FATHOM_ID && (
+        publicRuntimeConfig.fathomDomain &&
+        publicRuntimeConfig.fathomId && (
           <NextScript>
             {`(function(f, a, t, h, o, m){
               a[h]=a[h]||function(){
@@ -48,8 +50,8 @@ export default function Head({ instructions, svgText }) {
               m=f.getElementsByTagName('script')[0];
               o.async=1; o.src=t; o.id='fathom-script';
               m.parentNode.insertBefore(o,m)
-            })(document, window, '${process.env.FATHOM_DOMAIN}', 'fathom');
-            fathom('set', 'siteId', '${process.env.FATHOM_ID}');
+            })(document, window, '${publicRuntimeConfig.fathomDomain}', 'fathom');
+            fathom('set', 'siteId', '${publicRuntimeConfig.fathomId}');
             fathom('trackPageview');`}
           </NextScript>
         )}
