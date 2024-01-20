@@ -40,17 +40,12 @@ export default class CommandModel {
       this.partValues?.[i] ? parseFloat(this.partValues[i]) : partName
     );
 
-    return this.isRelative()
-      ? this.properties.infoRelative(
-          values,
-          this.previousEndPoint?.map(v => parseFloat(v)),
-          this.previousMEndPoint?.map(v => parseFloat(v))
-        )
-      : this.properties.infoAbsolute(
-          values,
-          this.previousEndPoint?.map(v => parseFloat(v)),
-          this.previousMEndPoint?.map(v => parseFloat(v))
-        );
+    return this.properties.info(
+      !this.isRelative(),
+      values,
+      this.previousEndPoint?.map(v => parseFloat(v)),
+      this.previousMEndPoint?.map(v => parseFloat(v))
+    );
   };
 
   endPoint = () => {
