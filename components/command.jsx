@@ -115,7 +115,14 @@ export default function Command({
         </span>
       </div>
       {infoOpen && (
-        <div className={styles.infoBox}>{command.infoString() || ''}</div>
+        <div className={styles.infoBox}>
+          <div className={styles.infoString}>{command.infoString() || ''}</div>
+          <div>
+            <a href={command.properties.link} target='_blank'>
+              Learn more
+            </a>
+          </div>
+        </div>
       )}
     </div>
   );
