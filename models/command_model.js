@@ -2,11 +2,13 @@ import { COMMANDS, DIGIT, SEPARATOR } from '../utils/constants';
 
 export default class CommandModel {
   constructor(
+    uuid,
     instruction,
     cursorPosition,
     previousEndPoint,
     previousMEndPoint
   ) {
+    this.uuid = uuid;
     this.instruction = instruction;
     this.letter = instruction[0];
     this.cursorPosition = cursorPosition;

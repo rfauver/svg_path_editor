@@ -26,7 +26,7 @@ export default function Editor({
       </div>
       {commands.map((command, index) => (
         <Command
-          key={index}
+          key={command.uuid}
           index={index}
           command={command}
           setCursorPosition={setCursorPosition}
