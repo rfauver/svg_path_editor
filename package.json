@@ -8,14 +8,14 @@
     "start": "next start"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
-    "next": "12",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "sass": "^1.32.8",
+    "classnames": "^2.5.1",
+    "next": "14.1.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "sass": "^1.70.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "prettier": "2.2.1"
+    "prettier": "3.2.4"
   }
 }
