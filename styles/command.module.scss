@@ -7,6 +7,11 @@
   padding-left: 12px;
   border-radius: 6px;
 
+  @media (max-width: 620px) {
+    margin-right: -8px;
+    padding-right: 8px;
+  }
+
   &:hover,
   &:focus-within {
     .dropdown,
@@ -32,7 +37,12 @@
 .commandLine {
   display: flex;
   align-items: center;
-  min-width: 503px;
+  column-gap: 10px;
+  row-gap: 4px;
+
+  @media (max-width: 620px) {
+    flex-wrap: wrap;
+  }
 }
 
 .instruction {
@@ -87,15 +97,27 @@
   color: var(--text-color);
 }
 
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  @media (max-width: 565px) {
+    width: 100%;
+  }
+}
+
 .dropdown {
   width: 100px;
-  margin: 0 10px;
   background-color: var(--input-color);
   color: var(--text-color);
   border: none;
   padding: 4px;
   box-shadow: var(--input-shadow);
   border-radius: 4px;
+
+  @media (max-width: 565px) {
+    width: 100%;
+  }
 }
 
 .dropdown,
@@ -109,7 +131,8 @@
 .relativeToggle {
   position: relative;
   height: 18px;
-  width: 64px;
+  min-width: 64px;
+  font-family: var(--font-sans);
 }
 
 .toggleCheckbox {
@@ -158,6 +181,10 @@
   }
 }
 
+.buttons {
+  display: flex;
+}
+
 .button {
   font-family: Arial;
   color: white;
@@ -177,7 +204,6 @@
 }
 
 .addButton {
-  margin-left: 10px;
   background-color: #66bb6a;
   &:before {
     content: '+';
@@ -200,12 +226,11 @@
   border: 1px solid var(--info-color);
   color: var(--info-color);
   border-radius: 100%;
-  width: 16px;
+  min-width: 16px;
   height: 16px;
   text-align: center;
   font-size: 12px;
   line-height: 15px;
-  margin-left: 10px;
   cursor: pointer;
   user-select: none;
 }

@@ -2,6 +2,11 @@
   display: flex;
   width: 100%;
   margin: 14px 0 10px;
+
+  @media (max-width: 620px) {
+    overflow: auto;
+    padding-bottom: 4px;
+  }
 }
 
 .shape {

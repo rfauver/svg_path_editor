@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useWindowSize } from '../utils/hooks/useWindowSize';
 
 import styles from '../styles/button_row.module.scss';
 
 export default function ButtonRow({ svgText, commands, setInstructions }) {
+  const windowSize = useWindowSize();
   const [copyText, setCopyText] = useState('Copy');
   const [copyTimeout, setCopyTimeout] = useState(null);
   const onCopyClicked = e => {
@@ -47,6 +49,9 @@ export default function ButtonRow({ svgText, commands, setInstructions }) {
     }
   };
 
+  const convertText = str =>
+    windowSize.width > 402 ? `Convert to ${str}` : str;
+
   return (
     <div className={styles.component}>
       <button
@@ -54,14 +59,14 @@ export default function ButtonRow({ svgText, commands, setInstructions }) {
         onClick={onAbsoluteClicked}
         onKeyDown={onPress(onAbsoluteClicked)}
       >
-        Convert to Absolute
+        {convertText('Absolute')}
       </button>
       <button
         name='Convert to Relative'
         onClick={onRelativeClicked}
         onKeyDown={onPress(onRelativeClicked)}
       >
-        Convert to Relative
+        {convertText('Relative')}
       </button>
 
       <button

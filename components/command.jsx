@@ -68,51 +68,55 @@ export default function Command({
             )
           </div>
         )}
-        <select
-          className={styles.dropdown}
-          name='path'
-          onChange={e => updateInstructions(index, e.target.value)}
-          value={command.letter?.toUpperCase()}
-        >
-          {Object.entries(COMMANDS).map(([commandLetter, command]) => (
-            <option key={commandLetter} value={commandLetter}>
-              {command.name}
-            </option>
-          ))}
-        </select>
-        <label className={styles.relativeToggle} htmlFor={`toggle-${index}`}>
-          Rel
-          <input
-            type='checkbox'
-            id={`toggle-${index}`}
-            className={styles.toggleCheckbox}
-            checked={command.isRelative()}
-            onChange={e =>
-              updateInstructions(
-                index,
-                e.target.checked
-                  ? command.instruction.toLowerCase()
-                  : command.instruction.toUpperCase()
-              )
-            }
-          />
-          <div className={styles.toggleSwitch} />
-        </label>
-        <button
-          className={classnames(styles.button, styles.addButton)}
-          name='Add'
-          onMouseDown={addCommandClicked}
-          onKeyDown={addCommandPressed}
-        />
-        <button
-          className={classnames(styles.button, styles.removeButton)}
-          name='Remove'
-          onMouseDown={removeCommandClicked}
-          onKeyDown={removeCommandPressed}
-        />
-        <span className={styles.info} onClick={() => setInfoOpen(!infoOpen)}>
-          i
-        </span>
+        <div className={styles.controls}>
+          <select
+            className={styles.dropdown}
+            name='path'
+            onChange={e => updateInstructions(index, e.target.value)}
+            value={command.letter?.toUpperCase()}
+          >
+            {Object.entries(COMMANDS).map(([commandLetter, command]) => (
+              <option key={commandLetter} value={commandLetter}>
+                {command.name}
+              </option>
+            ))}
+          </select>
+          <label className={styles.relativeToggle} htmlFor={`toggle-${index}`}>
+            Rel
+            <input
+              type='checkbox'
+              id={`toggle-${index}`}
+              className={styles.toggleCheckbox}
+              checked={command.isRelative()}
+              onChange={e =>
+                updateInstructions(
+                  index,
+                  e.target.checked
+                    ? command.instruction.toLowerCase()
+                    : command.instruction.toUpperCase()
+                )
+              }
+            />
+            <div className={styles.toggleSwitch} />
+          </label>
+          <div className={styles.buttons}>
+            <button
+              className={classnames(styles.button, styles.addButton)}
+              name='Add'
+              onMouseDown={addCommandClicked}
+              onKeyDown={addCommandPressed}
+            />
+            <button
+              className={classnames(styles.button, styles.removeButton)}
+              name='Remove'
+              onMouseDown={removeCommandClicked}
+              onKeyDown={removeCommandPressed}
+            />
+          </div>
+          <span className={styles.info} onClick={() => setInfoOpen(!infoOpen)}>
+            i
+          </span>
+        </div>
       </div>
       {infoOpen && (
         <div className={styles.infoBox}>

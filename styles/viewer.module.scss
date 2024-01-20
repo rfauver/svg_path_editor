@@ -6,12 +6,17 @@
     transition: d 300ms;
   }
   svg circle {
-    transition: cx 300ms, cy 300ms;
+    transition:
+      cx 300ms,
+      cy 300ms;
   }
 }
 
 .coord {
   position: absolute;
+  @media (max-width: 620px) {
+    font-size: 14px;
+  }
 }
 
 .coordXMin {
@@ -31,6 +36,9 @@
 .coordYMax {
   bottom: 1px;
   left: -30px;
+  @media (max-width: 620px) {
+    left: -26px;
+  }
 }
 
 .view {
