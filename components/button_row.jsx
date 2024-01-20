@@ -24,11 +24,21 @@ export default function ButtonRow({ svgText, commands, setInstructions }) {
   };
   const onAbsoluteClicked = e => {
     if (e && e.button !== 0) return;
-    setInstructions(commands.map(command => command.absoluteInstruction()));
+    setInstructions(
+      commands.map(command => ({
+        raw: command.absoluteInstruction(),
+        uuid: command.uuid,
+      }))
+    );
   };
   const onRelativeClicked = e => {
     if (e && e.button !== 0) return;
-    setInstructions(commands.map(command => command.relativeInstruction()));
+    setInstructions(
+      commands.map(command => ({
+        raw: command.relativeInstruction(),
+        uuid: command.uuid,
+      }))
+    );
   };
 
   const onPress = clickHandler => e => {

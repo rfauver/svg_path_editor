@@ -9,6 +9,7 @@
   --link-color: #0070f3;
   --toggle-disabled-color: #ccc;
   --info-color: #777;
+  --button-hover-color: #e2e3e5;
   --input-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
   --annotation-shadow: 3px 3px 4px 1px rgba(0, 0, 0, 0.16);
 }
@@ -22,6 +23,7 @@
     --link-color: #5da4f6;
     --toggle-disabled-color: var(--input-color);
     --info-color: #ccc;
+    --button-hover-color: #444851;
     --input-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
     --annotation-shadow: 4px 4px 8px 1px rgba(0, 0, 0, 0.4);
   }

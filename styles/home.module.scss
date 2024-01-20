@@ -1,17 +1,26 @@
 .container {
   min-height: 100vh;
   max-width: 1500px;
-  padding: 0 50px;
+  padding: 0 24px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 1060px) {
+    max-width: 790px;
+    padding: 0 14px;
+  }
 }
 
 .heading {
   font-size: 90px;
   width: 100%;
   margin: 20px 0 0;
+
+  @media (max-width: 1060px) {
+    font-size: 60px;
+  }
 }
 
 .intro {
@@ -35,17 +44,28 @@
   grid-template-columns: repeat(2, 1fr);
   column-gap: 30px;
   width: 100%;
+  margin: 10px 0;
   @media (max-width: 1060px) {
     grid-template-columns: 1fr;
   }
 }
 
+.sectionWrapper {
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 1060px) {
+    max-width: 750px;
+    margin-bottom: 10px;
+  }
+}
+
 .section {
+  height: 100%;
   background-color: var(--panel-color);
   border-radius: 20px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   padding: 20px 24px;
-  margin: 10px 0;
   @media (max-width: 1060px) {
     max-width: 750px;
   }

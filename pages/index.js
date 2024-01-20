@@ -4,6 +4,7 @@ import ExampleShapes from '../components/example_shapes';
 import Head from '../components/head';
 import LearnMore from '../components/learn_more';
 import Viewer from '../components/viewer';
+import ButtonRow from '../components/button_row';
 import CommandModel from '../models/command_model';
 import { SURROUNDING_TEXT, SHAPES } from '../utils/constants';
 import classnames from 'classnames';
@@ -96,17 +97,22 @@ export default function Home() {
       </div>
       <ExampleShapes fillColor={fillColor} setInstructions={setInstructions} />
       <main className={classnames('main', styles.main)}>
-        <div className={styles.section}>
-          <Editor
-            commands={commands}
-            fillColor={fillColor}
+        <div className={styles.sectionWrapper}>
+          <div className={styles.section}>
+            <Editor
+              commands={commands}
+              fillColor={fillColor}
+              setFillColor={setFillColor}
+              setCursorPosition={setCursorPosition}
+              updateInstructions={updateInstructions}
+              addCommand={addCommand}
+              removeCommand={removeCommand}
+            />
+          </div>
+          <ButtonRow
             svgText={svgText}
-            setFillColor={setFillColor}
-            setCursorPosition={setCursorPosition}
+            commands={commands}
             setInstructions={setInstructions}
-            updateInstructions={updateInstructions}
-            addCommand={addCommand}
-            removeCommand={removeCommand}
           />
         </div>
 
