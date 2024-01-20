@@ -1,6 +1,6 @@
 export const DIGIT = /((?:\+|-)?\d+(?:\.\d+)?)/;
 const LAST_DIGIT = /((?:\+|-)?(?:\d+\.)?\d*)/;
-export const SEPARATOR = /\s*,?\s*/;
+export const SEPARATOR = /\s*[ ,]\s*/;
 
 function buildParts(letter, length) {
   return [...new Array(length)].map(
@@ -14,95 +14,231 @@ function buildParts(letter, length) {
   );
 }
 
+const currentPositionString = prev => (prev ? ` (${prev[0]},${prev[1]})` : '');
+
+const optPlus = coord => (typeof coord === 'number' && coord < 0 ? '' : '+');
+
+const relativeToString = (v, prev, names = ['x', 'y']) => {
+  if (v.every(coord => typeof coord === 'number') && prev) {
+    return `${prev[0] + v[0]},${prev[1] + v[1]} (${prev[0]}${optPlus(v[0])}${
+      v[0]
+    }, ${prev[1]}${optPlus(v[1])}${v[1]})`;
+  } else if (prev) {
+    return `${prev[0]}${optPlus(v[0])}${v[0]}, ${prev[1]}${optPlus(v[1])}${
+      v[1]
+    }`;
+  } else {
+    return `(current ${names[0]}+${v[0]}, current ${names[1]}+${v[1]})`;
+  }
+};
+
+const relativeHorizontalToString = (v, prev) => {
+  if (v.every(coord => typeof coord === 'number') && prev) {
+    return `${prev[0] + v[0]},${prev[1]} (${prev[0]}${optPlus(v[0])}${v[0]}, ${
+      prev[1]
+    })`;
+  } else if (prev) {
+    return `${prev[0]}${optPlus(v[0])}${v[0]}, ${prev[1]}`;
+  } else {
+    return `(current x${optPlus(v[0])}${v[0]}, current y)`;
+  }
+};
+
+const relativeVerticalToString = (v, prev) => {
+  if (v.every(coord => typeof coord === 'number') && prev) {
+    return `${prev[0]},${prev[1] + v[0]} (${prev[0]},${optPlus(v[0])}${v[0]})`;
+  } else if (prev) {
+    return `${prev[0]}, ${prev[1]}${optPlus(v[0])}${v[0]}`;
+  } else {
+    return `(current x, current y${optPlus(v[0])}${v[0]})`;
+  }
+};
+
 export const COMMANDS = {
   M: {
     name: 'Move',
     parts: buildParts('M', 2),
     partNames: ['x', 'y'],
-    infoAbsolute: v =>
-      `Move the pen from its current position to ${v[0]},${v[1]}`,
-    infoRelative: v =>
-      `Move the pen from its current position ${v[0]} units horizontally and ${v[1]} units vertically`,
+    infoAbsolute: (v, prev) =>
+      `Move the pen from its current position${currentPositionString(
+        prev
+      )} to ${v[0]},${v[1]}`,
+    infoRelative: (v, prev) =>
+      `Move the pen from its current position${currentPositionString(
+        prev
+      )} to ${relativeToString(v, prev)}`,
   },
   L: {
     name: 'Line',
     parts: buildParts('L', 2),
     partNames: ['x', 'y'],
-    infoAbsolute: v =>
-      `Draw a straight line from the current position to ${v[0]},${v[1]}`,
-    infoRelative: v =>
-      `Draw a straight line from the current position to a point ${v[0]} units away horizontally and ${v[1]} units away vertically`,
+    infoAbsolute: (v, prev) =>
+      `Draw a straight line from the current position${currentPositionString(
+        prev
+      )} to ${v[0]},${v[1]}`,
+    infoRelative: (v, prev) =>
+      `Draw a straight line from the current position${currentPositionString(
+        prev
+      )} to ${relativeToString(v, prev)}`,
   },
   H: {
     name: 'Horizontal Line',
-    parts: buildParts('H', 2),
+    parts: buildParts('H', 1),
     partNames: ['x'],
-    infoAbsolute: v =>
-      `Draw a horizontal line from the current position to coordinate ${v[0]}`,
-    infoRelative: v =>
-      `Draw a line ${v[0]} units horizontally from the current position`,
+    infoAbsolute: (v, prev) =>
+      `Draw a horizontal line from the current position${currentPositionString(
+        prev
+      )} to ${v[0]},${prev[1]}`,
+    infoRelative: (v, prev) =>
+      `Draw a horizontal line from the current position${currentPositionString(
+        prev
+      )} to ${relativeHorizontalToString(v, prev)}`,
   },
   V: {
     name: 'Vertical Line',
     parts: buildParts('V', 1),
     partNames: ['y'],
     infoAbsolute: v =>
-      `Draw a horizontal line from the current position to coordinate ${v[0]}`,
+      `Draw a vertical line from the current position${currentPositionString(
+        prev
+      )} to ${v[0]},${prev[1]}`,
     infoRelative: v =>
-      `Draw a line ${v[0]} units vertically from the current position`,
+      `Draw a vertical line from the current position${currentPositionString(
+        prev
+      )} to ${relativeVerticalToString(v, prev)}`,
   },
   C: {
     name: 'Cubic Bézier Curve',
     parts: buildParts('C', 6),
     partNames: ['x1', 'y1', 'x2', 'y2', 'x', 'y'],
-    infoAbsolute: v =>
-      `Draw a bézier curve from the current position to ${v[4]},${v[5]} with ${v[0]},${v[1]} as the start control point and ${v[2]},${v[3]} as the end control point`,
-    infoRelative: v =>
-      `Draw a bézier curve from the current position to ${v[4]} units away horizontally and ${v[5]} units away vertically, with ${v[0]},${v[1]} as the number of units away from the starting position for the start control point and ${v[2]},${v[3]} as the number of units away from the starting position for the end control point`,
+    infoAbsolute: (v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${v[4]},${v[5]} with ${v[0]},${
+        v[1]
+      } as the start control point and ${v[2]},${
+        v[3]
+      } as the end control point`,
+    infoRelative: (v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${relativeToString(v.slice(4, 6), prev)}, with ${relativeToString(
+        v,
+        prev,
+        ['x1', 'y1']
+      )} as the start control point and ${relativeToString(
+        v.slice(2, 4),
+        prev,
+        ['x2', 'y2']
+      )} as the end control point`,
   },
   S: {
     name: 'Shortcut Cubic Curve',
     parts: buildParts('S', 4),
     partNames: ['x2', 'y2', 'x', 'y'],
-    infoAbsolute: v =>
-      `Draw a bézier curve from the current position to ${v[2]},${v[3]} with ${v[0]},${v[1]} as the end control point and a reflection of the previous curve command's end control point as the start control point (if it exists)`,
-    infoRelative: v =>
-      `Draw a bézier curve from the current position to ${v[2]} units away horizontally and ${v[3]} units away vertically, with ${v[0]},${v[1]} as the number of units away from the starting position for the end control point and a reflection of the previous curve command's end control point as the start control point (if it exists)`,
+    infoAbsolute: (v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${v[2]},${v[3]} with ${v[0]},${
+        v[1]
+      } as the end control point and a reflection of the previous curve command's end control point as the start control point (if it exists)`,
+    infoRelative: (v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${relativeToString(v.slice(2, 4), prev)}, with ${relativeToString(
+        v,
+        prev,
+        ['x2', 'y2']
+      )} as the end control point and a reflection of the previous curve command's end control point as the start control point (if it exists)`,
   },
   Q: {
     name: 'Quadratic Bézier Curve',
     parts: buildParts('Q', 4),
     partNames: ['x1', 'y1', 'x', 'y'],
-    infoAbsolute: v =>
-      `Draw a bézier curve from the current position to ${v[2]},${v[3]} with a single control point at ${v[0]},${v[1]}`,
-    infoRelative: v =>
-      `Draw a bézier curve from the current position to ${v[2]} units away horizontally and ${v[3]} units away vertically, with ${v[0]},${v[1]} as the number of units away from the starting position for the single control point`,
+    infoAbsolute: (v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${v[2]},${v[3]} with a single control point at ${v[0]},${v[1]}`,
+    infoRelative: (v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${relativeToString(
+        v.slice(2, 4),
+        prev
+      )}, with a single control point at ${relativeToString(v, prev, [
+        'x1',
+        'y1',
+      ])}`,
   },
   T: {
     name: 'Shortcut Quadratic Curve',
     parts: buildParts('T', 2),
     partNames: ['x', 'y'],
-    infoAbsolute: v =>
-      `Draw a bézier curve from the current position to ${v[0]},${v[1]}, using a reflection of the previous curve command's control point as the single control point`,
-    infoRelative: v =>
-      `Draw a bézier curve from the current position to ${v[0]} units away horizontally and ${v[1]} units away vertically, using a reflection of the previous curve command's control point as the single control point`,
+    infoAbsolute: (v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${v[0]},${
+        v[1]
+      }, using a reflection of the previous curve command's control point as the single control point`,
+    infoRelative: (v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${relativeToString(
+        v,
+        prev
+      )}, using a reflection of the previous curve command's control point as the single control point`,
   },
   A: {
     name: 'Elliptical Arc Curve',
     parts: buildParts('A', 7),
     partNames: ['rx', 'ry', 'angle', 'large-arc-flag', 'sweep-flag', 'x', 'y'],
-    infoAbsolute: v =>
-      `Draw an arc from the current position to ${v[5]},${v[6]}, with ${v[0]} and ${v[1]} as the radii of the ellipse, ${v[2]} as the angle of rotation of the ellipse, ${v[3]} for the large-arc-flag to chose between small arc or large arc, and ${v[4]} for the sweep-flag to chose between the couterclockwise or clockwise arc`,
-    infoRelative: v =>
-      `Draw an arc from the current position to ${v[5]} units away horizontally and ${v[6]} units away vertically, with ${v[0]} and ${v[1]} as the radii of the ellipse, ${v[2]} as the angle of rotation of the ellipse, ${v[3]} for the large-arc-flag to chose between small arc or large arc, and ${v[4]} for the sweep-flag to chose between the couterclockwise or clockwise arc`,
+    infoAbsolute: (v, prev) =>
+      // `Draw an arc from the current position to ${v[5]},${v[6]}, with ${v[0]} and ${v[1]} as the radii of the ellipse, ${v[2]} as the angle of rotation of the ellipse, ${v[3]} for the large-arc-flag to chose between small arc or large arc, and ${v[4]} for the sweep-flag to chose between the couterclockwise or clockwise arc`,
+      `Draw an arc from the current position${currentPositionString(prev)} to ${
+        v[5]
+      },${v[6]}, with ${v[0]} and ${v[1]} as the radii of the ellipse, ${
+        v[2]
+      } as the angle of rotation of the ellipse, ${arcFlagString(
+        v[3]
+      )}, and ${sweepFlagString(v[4])}`,
+    infoRelative: (v, prev) =>
+      `Draw an arc from the current position${currentPositionString(
+        prev
+      )} to ${relativeToString(v.slice(5, 7), prev)}, with ${v[0]} and ${
+        v[1]
+      } as the radii of the ellipse, ${
+        v[2]
+      } as the angle of rotation of the ellipse, ${arcFlagString(
+        v[3]
+      )}, and ${sweepFlagString(v[4])}`,
   },
   Z: {
     name: 'Close Path',
-    infoAbsolute: v =>
-      'Draw a straight line from the current position back to the start of the path',
-    infoRelative: v =>
-      'Draw a straight line from the current position back to the start of the path',
+    infoAbsolute: (v, prev, prevM) =>
+      `Draw a straight line from the current position${currentPositionString(
+        prev
+      )} back to the start of the path${currentPositionString(prevM)}`,
+    infoRelative: (v, prev, prevM) =>
+      `Draw a straight line from the current position${currentPositionString(
+        prev
+      )} back to the start of the path${currentPositionString(prevM)}`,
   },
+};
+
+const arcFlagString = largeArc => {
+  if (typeof largeArc === 'number' && [0, 1].includes(largeArc)) {
+    return `using the ${largeArc === 0 ? 'smaller' : 'larger'} of the two arcs`;
+  } else {
+    `with large-arc-flag (0 or 1) deciding between the smaller or larger arc`;
+  }
+};
+
+const sweepFlagString = sweep => {
+  if (typeof sweep === 'number' && [0, 1].includes(sweep)) {
+    return `using the ${sweep === 0 ? 'counterclockwise' : 'clockwise'} arc`;
+  } else {
+    `with sweep-flag (0 or 1) deciding between the counterclockwise or clockwise arc`;
+  }
 };
 
 export const SURROUNDING_TEXT = [
