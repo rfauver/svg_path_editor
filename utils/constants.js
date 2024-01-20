@@ -1,6 +1,15 @@
+import {
+  currentPositionString,
+  relativeToString,
+  relativeHorizontalToString,
+  relativeVerticalToString,
+  arcFlagString,
+  sweepFlagString,
+} from './infoStringHelpers';
+
 export const DIGIT = /((?:\+|-)?\d+(?:\.\d+)?)/;
 const LAST_DIGIT = /((?:\+|-)?(?:\d+\.)?\d*)/;
-export const SEPARATOR = /\s*,?\s*/;
+export const SEPARATOR = /\s*[ ,]\s*/;
 
 function buildParts(letter, length) {
   return [...new Array(length)].map(
@@ -19,89 +28,128 @@ export const COMMANDS = {
     name: 'Move',
     parts: buildParts('M', 2),
     partNames: ['x', 'y'],
-    infoAbsolute: v =>
-      `Move the pen from its current position to ${v[0]},${v[1]}`,
-    infoRelative: v =>
-      `Move the pen from its current position ${v[0]} units horizontally and ${v[1]} units vertically`,
+    info: (absolute, v, prev) =>
+      `Move the pen from its current position${currentPositionString(
+        prev
+      )} to ${absolute ? `${v[0]},${v[1]}` : relativeToString(v, prev)}`,
+    link: 'https://svgwg.org/svg2-draft/paths.html#PathDataMovetoCommands',
   },
   L: {
     name: 'Line',
     parts: buildParts('L', 2),
     partNames: ['x', 'y'],
-    infoAbsolute: v =>
-      `Draw a straight line from the current position to ${v[0]},${v[1]}`,
-    infoRelative: v =>
-      `Draw a straight line from the current position to a point ${v[0]} units away horizontally and ${v[1]} units away vertically`,
+    info: (absolute, v, prev) =>
+      `Draw a straight line from the current position${currentPositionString(
+        prev
+      )} to ${absolute ? `${v[0]},${v[1]}` : relativeToString(v, prev)}`,
+    link: 'https://svgwg.org/svg2-draft/paths.html#PathDataLinetoCommands',
   },
   H: {
     name: 'Horizontal Line',
-    parts: buildParts('H', 2),
+    parts: buildParts('H', 1),
     partNames: ['x'],
-    infoAbsolute: v =>
-      `Draw a horizontal line from the current position to coordinate ${v[0]}`,
-    infoRelative: v =>
-      `Draw a line ${v[0]} units horizontally from the current position`,
+    info: (absolute, v, prev) =>
+      `Draw a horizontal line from the current position${currentPositionString(
+        prev
+      )} to ${
+        absolute ? `${v[0]},${prev[1]}` : relativeHorizontalToString(v, prev)
+      }`,
+    link: 'https://svgwg.org/svg2-draft/paths.html#PathDataLinetoCommands',
   },
   V: {
     name: 'Vertical Line',
     parts: buildParts('V', 1),
     partNames: ['y'],
-    infoAbsolute: v =>
-      `Draw a horizontal line from the current position to coordinate ${v[0]}`,
-    infoRelative: v =>
-      `Draw a line ${v[0]} units vertically from the current position`,
+    info: (absolute, v, prev) =>
+      `Draw a vertical line from the current position${currentPositionString(
+        prev
+      )} to ${
+        absolute ? `${v[0]},${prev[1]}` : relativeVerticalToString(v, prev)
+      }`,
+    link: 'https://svgwg.org/svg2-draft/paths.html#PathDataLinetoCommands',
   },
   C: {
     name: 'Cubic Bézier Curve',
     parts: buildParts('C', 6),
     partNames: ['x1', 'y1', 'x2', 'y2', 'x', 'y'],
-    infoAbsolute: v =>
-      `Draw a bézier curve from the current position to ${v[4]},${v[5]} with ${v[0]},${v[1]} as the start control point and ${v[2]},${v[3]} as the end control point`,
-    infoRelative: v =>
-      `Draw a bézier curve from the current position to ${v[4]} units away horizontally and ${v[5]} units away vertically, with ${v[0]},${v[1]} as the number of units away from the starting position for the start control point and ${v[2]},${v[3]} as the number of units away from the starting position for the end control point`,
+    info: (absolute, v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${
+        absolute ? `${v[4]},${v[5]}` : relativeToString(v.slice(4, 6), prev)
+      } with ${
+        absolute ? `${v[0]},${v[1]}` : relativeToString(v, prev, ['x1', 'y1'])
+      } as the start control point and ${
+        absolute
+          ? `${v[2]},${v[3]}`
+          : relativeToString(v.slice(2, 4), prev, ['x2', 'y2'])
+      } as the end control point`,
+    link: 'https://svgwg.org/svg2-draft/paths.html#PathDataCubicBezierCommands',
   },
   S: {
     name: 'Shortcut Cubic Curve',
     parts: buildParts('S', 4),
     partNames: ['x2', 'y2', 'x', 'y'],
-    infoAbsolute: v =>
-      `Draw a bézier curve from the current position to ${v[2]},${v[3]} with ${v[0]},${v[1]} as the end control point and a reflection of the previous curve command's end control point as the start control point (if it exists)`,
-    infoRelative: v =>
-      `Draw a bézier curve from the current position to ${v[2]} units away horizontally and ${v[3]} units away vertically, with ${v[0]},${v[1]} as the number of units away from the starting position for the end control point and a reflection of the previous curve command's end control point as the start control point (if it exists)`,
+    info: (absolute, v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${
+        absolute ? `${v[2]},${v[3]}` : relativeToString(v.slice(2, 4), prev)
+      } with ${
+        absolute ? `${v[0]},${v[1]}` : relativeToString(v, prev, ['x2', 'y2'])
+      } as the end control point and a reflection of the previous curve command's end control point as the start control point (if it exists)`,
+    link: 'https://svgwg.org/svg2-draft/paths.html#PathDataCubicBezierCommands',
   },
   Q: {
     name: 'Quadratic Bézier Curve',
     parts: buildParts('Q', 4),
     partNames: ['x1', 'y1', 'x', 'y'],
-    infoAbsolute: v =>
-      `Draw a bézier curve from the current position to ${v[2]},${v[3]} with a single control point at ${v[0]},${v[1]}`,
-    infoRelative: v =>
-      `Draw a bézier curve from the current position to ${v[2]} units away horizontally and ${v[3]} units away vertically, with ${v[0]},${v[1]} as the number of units away from the starting position for the single control point`,
+    info: (absolute, v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${
+        absolute ? `${v[2]},${v[3]}` : relativeToString(v.slice(2, 4), prev)
+      } with a single control point at ${
+        absolute ? `${v[0]},${v[1]}` : relativeToString(v, prev, ['x1', 'y1'])
+      }`,
+    link:
+      'https://svgwg.org/svg2-draft/paths.html#PathDataQuadraticBezierCommands',
   },
   T: {
     name: 'Shortcut Quadratic Curve',
     parts: buildParts('T', 2),
     partNames: ['x', 'y'],
-    infoAbsolute: v =>
-      `Draw a bézier curve from the current position to ${v[0]},${v[1]}, using a reflection of the previous curve command's control point as the single control point`,
-    infoRelative: v =>
-      `Draw a bézier curve from the current position to ${v[0]} units away horizontally and ${v[1]} units away vertically, using a reflection of the previous curve command's control point as the single control point`,
+    info: (absolute, v, prev) =>
+      `Draw a bézier curve from the current position${currentPositionString(
+        prev
+      )} to ${
+        absolute ? `${v[0]},${v[1]}` : relativeToString(v, prev)
+      }, using a reflection of the previous curve command's control point as the single control point`,
+    link:
+      'https://svgwg.org/svg2-draft/paths.html#PathDataQuadraticBezierCommands',
   },
   A: {
     name: 'Elliptical Arc Curve',
     parts: buildParts('A', 7),
     partNames: ['rx', 'ry', 'angle', 'large-arc-flag', 'sweep-flag', 'x', 'y'],
-    infoAbsolute: v =>
-      `Draw an arc from the current position to ${v[5]},${v[6]}, with ${v[0]} and ${v[1]} as the radii of the ellipse, ${v[2]} as the angle of rotation of the ellipse, ${v[3]} for the large-arc-flag to chose between small arc or large arc, and ${v[4]} for the sweep-flag to chose between the couterclockwise or clockwise arc`,
-    infoRelative: v =>
-      `Draw an arc from the current position to ${v[5]} units away horizontally and ${v[6]} units away vertically, with ${v[0]} and ${v[1]} as the radii of the ellipse, ${v[2]} as the angle of rotation of the ellipse, ${v[3]} for the large-arc-flag to chose between small arc or large arc, and ${v[4]} for the sweep-flag to chose between the couterclockwise or clockwise arc`,
+    info: (absolute, v, prev) =>
+      `Draw an arc from the current position${currentPositionString(prev)} to ${
+        absolute ? `${v[5]},${v[6]}` : relativeToString(v.slice(5, 7), prev)
+      }, with ${v[0]} and ${v[1]} as the radii of the ellipse, ${
+        v[2]
+      } as the angle of rotation of the ellipse, ${arcFlagString(
+        v[3]
+      )}, and ${sweepFlagString(v[4])}`,
+    link:
+      'https://svgwg.org/svg2-draft/paths.html#PathDataEllipticalArcCommands',
   },
   Z: {
     name: 'Close Path',
-    infoAbsolute: v =>
-      'Draw a straight line from the current position back to the start of the path',
-    infoRelative: v =>
-      'Draw a straight line from the current position back to the start of the path',
+    info: (absolute, v, prev, prevM) =>
+      `Draw a straight line from the current position${currentPositionString(
+        prev
+      )} back to the start of the path${currentPositionString(prevM)}`,
+    link: 'https://svgwg.org/svg2-draft/paths.html#PathDataClosePathCommand',
   },
 };
 

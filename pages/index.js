@@ -7,11 +7,17 @@ import Viewer from '../components/viewer';
 import CommandModel from '../models/command_model';
 import { SURROUNDING_TEXT, SHAPES } from '../utils/constants';
 import classnames from 'classnames';
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from '../styles/home.module.scss';
 
+const withUuids = strings => strings.map(str => ({ raw: str, uuid: uuidv4() }));
+const toRaw = instructions => instructions.map(instruction => instruction.raw);
+
 export default function Home() {
-  const [instructions, setInstructions] = useState(SHAPES.QUARTER_NOTE);
+  const [instructions, setInstructions] = useState(
+    withUuids(SHAPES.QUARTER_NOTE)
+  );
   const [fillColor, setFillColor] = useState('#0070f3');
   const [cursorPosition, setCursorPosition] = useState(null);
   const [indexToFocus, setIndexToFocus] = useState(null);
@@ -25,13 +31,13 @@ export default function Home() {
   }, [indexToFocus]);
   const updateInstructions = (i, instruction) => {
     const newInstructions = [...instructions];
-    newInstructions[i] = instruction;
+    newInstructions[i] = { ...newInstructions[i], raw: instruction };
     setInstructions(newInstructions);
   };
   const addCommand = index => {
     setInstructions([
       ...instructions.slice(0, index + 1),
-      'L',
+      { raw: 'L', uuid: crypto.randomUUID() },
       ...instructions.slice(index + 1),
     ]);
     setIndexToFocus(index + 1);
@@ -50,14 +56,15 @@ export default function Home() {
   const svgText = [
     SURROUNDING_TEXT[0],
     `${SURROUNDING_TEXT[1]}${fillColor}${SURROUNDING_TEXT[2]}`,
-    '    ' + instructions.join(' '),
+    '    ' + toRaw(instructions).join(' '),
     ...SURROUNDING_TEXT.slice(3),
   ].join('\n');
 
   let previousEndPoint, previousMEndPoint;
   const commands = instructions.map(instruction => {
     const command = new CommandModel(
-      instruction,
+      instruction.uuid,
+      instruction.raw,
       cursorPosition,
       previousEndPoint,
       previousMEndPoint
@@ -77,7 +84,7 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <Head instructions={instructions} svgText={svgText} />
+      <Head instructions={toRaw(instructions)} svgText={svgText} />
 
       <h1 className={styles.heading}>SVG Path Editor</h1>
       <div className={styles.intro}>
