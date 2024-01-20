@@ -1,9 +1,9 @@
 import { SHAPES } from '../utils/constants';
+import { v4 as uuidv4 } from 'uuid';
 
 import styles from '../styles/example_shapes.module.scss';
 
-const withUuids = strings =>
-  strings.map(str => ({ raw: str, uuid: crypto.randomUUID() }));
+const withUuids = strings => strings.map(str => ({ raw: str, uuid: uuidv4() }));
 
 export default function ExampleShapes({ fillColor, setInstructions }) {
   return (
