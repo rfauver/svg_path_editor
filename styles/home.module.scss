@@ -76,6 +76,10 @@
 
 .viewer {
   height: fit-content;
+  padding: 0 24px 20px 0;
+  @media (max-width: 620px) {
+    padding: 0 14px 10px 0;
+  }
 }
 
 .learnMore {
