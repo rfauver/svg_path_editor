@@ -1,5 +1,5 @@
 .component {
-  width: min(537px, 90vw);
+  width: 537px;
   height: 68px;
   margin-right: auto;
   padding: 8px 12px;
@@ -12,4 +12,8 @@
   font-family: var(--font-mono);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
   background-color: var(--panel-color);
+
+  @media (max-width: 620px) {
+    width: 100%;
+  }
 }

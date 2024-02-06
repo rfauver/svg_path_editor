@@ -75,6 +75,8 @@
 }
 
 .viewer {
+  position: sticky;
+  top: 24px;
   height: fit-content;
   padding: 0 24px 20px 0;
   @media (max-width: 620px) {

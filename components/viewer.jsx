@@ -27,14 +27,14 @@ export default function Viewer({ commands, fillColor }) {
             fill={fillColor}
             d={commands.map(c => c.instruction).join(' ')}
           />
-          {commands.map(getPathHighlight)}
+          {commands.map((command, i) => getPathHighlight(command, i, maxCoord))}
         </svg>
       </div>
     </div>
   );
 }
 
-function getPathHighlight(command, index) {
+function getPathHighlight(command, index, maxCoord) {
   if (command.isA('M')) {
     const [x, y] = command.endPoint() || [0, 0];
     return (
@@ -42,7 +42,7 @@ function getPathHighlight(command, index) {
         className={`highlight-${index}`}
         cx={x}
         cy={y}
-        r='1'
+        r={maxCoord / 150}
         fill='red'
         key={index}
       />
@@ -63,8 +63,8 @@ function getPathHighlight(command, index) {
       className={`highlight-${index}`}
       stroke='red'
       fill='none'
-      strokeWidth='1'
-      strokeDasharray='2,1.2'
+      strokeWidth={maxCoord / 120}
+      strokeDasharray={`${maxCoord / 50},${maxCoord / 80}`}
       d={pathString}
       key={index}
     />
