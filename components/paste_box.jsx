@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { COMMANDS, SEPARATOR } from '../utils/constants';
+import { COMMANDS, DIGIT } from '../utils/constants';
 import withUuids from '../utils/withUuids';
 
 import styles from '../styles/paste_box.module.scss';
@@ -18,7 +18,7 @@ export default function PasteBox({ setInstructions }) {
     if (input.trim() === '') return;
 
     const commandChars = Object.keys(COMMANDS).join('');
-    const parts = (input + ' ')
+    const parts = (input.replace(/-/g, ' -') + ' ')
       .match(new RegExp(`[${commandChars}][^${commandChars}]+`, 'gi'))
       .map(part => {
         const letter = part[0];
@@ -27,7 +27,9 @@ export default function PasteBox({ setInstructions }) {
           return ['Z'];
         }
         const rest = part.slice(1).trim();
-        const coords = rest.split(SEPARATOR);
+        const coords = rest
+          .match(new RegExp(DIGIT, 'g'))
+          .map(coord => coord.replace(/^\./, '0.').replace('-.', '-0.'));
         if (coords.some(coord => coord.trim() === '')) {
           return null;
         }

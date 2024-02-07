@@ -7,8 +7,8 @@ import {
   sweepFlagString,
 } from './infoStringHelpers';
 
-export const DIGIT = /((?:\+|-)?\d+(?:\.\d+)?)/;
-const LAST_DIGIT = /((?:\+|-)?(?:\d+\.)?\d*)/;
+export const DIGIT = /((?:\+|-)?\d*\.?\d+)/;
+const LAST_DIGIT = /((?:\+|-)?\d*\.?\d*)/;
 export const SEPARATOR = /\s*[ ,]\s*/;
 
 function buildParts(letter, length) {
