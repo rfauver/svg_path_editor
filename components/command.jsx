@@ -11,6 +11,8 @@ export default function Command({
   updateInstructions,
   addCommand,
   removeCommand,
+  setHoveredIndex,
+  setActiveIndex,
 }) {
   const onInputChange = e =>
     updateInstructions(index, e.target.value.trimStart());
@@ -34,12 +36,21 @@ export default function Command({
   const addCommandClicked = () => addCommand(index);
   const removeCommandClicked = () => removeCommand(index);
 
+  const onFocus = () => setActiveIndex(index);
+  const onBlur = () => setActiveIndex(null);
+  const onInputFocus = e => {
+    onCursorChange(e);
+    onFocus();
+  };
+
   const [infoOpen, setInfoOpen] = useState(false);
   return (
     <div
       className={classnames(`command-${index}`, styles.component, {
         [styles.highlighted]: infoOpen,
       })}
+      onMouseEnter={() => setHoveredIndex(index)}
+      onMouseLeave={() => setHoveredIndex(null)}
     >
       <div className={styles.commandLine}>
         <input
@@ -48,7 +59,8 @@ export default function Command({
           onChange={onInputChange}
           onKeyUp={onKeyUp}
           onMouseUp={onCursorChange}
-          onFocus={onCursorChange}
+          onFocus={onInputFocus}
+          onBlur={onBlur}
           aria-label={`path command ${index + 1}`}
         />
         {command.properties?.partNames && (
@@ -74,6 +86,8 @@ export default function Command({
             name='path'
             onChange={e => updateInstructions(index, e.target.value)}
             value={command.letter?.toUpperCase()}
+            onFocus={onFocus}
+            onBlur={onBlur}
           >
             {Object.entries(COMMANDS).map(([commandLetter, command]) => (
               <option key={commandLetter} value={commandLetter}>
@@ -96,6 +110,8 @@ export default function Command({
                     : command.instruction.toUpperCase()
                 )
               }
+              onFocus={onFocus}
+              onBlur={onBlur}
             />
             <div className={styles.toggleSwitch} />
           </label>
@@ -105,12 +121,16 @@ export default function Command({
               name='Add'
               onMouseDown={addCommandClicked}
               onKeyDown={addCommandPressed}
+              onFocus={onFocus}
+              onBlur={onBlur}
             />
             <button
               className={classnames(styles.button, styles.removeButton)}
               name='Remove'
               onMouseDown={removeCommandClicked}
               onKeyDown={removeCommandPressed}
+              onFocus={onFocus}
+              onBlur={onBlur}
             />
           </div>
           <span className={styles.info} onClick={() => setInfoOpen(!infoOpen)}>

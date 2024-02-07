@@ -22,24 +22,6 @@ export default function Head({ instructions, svgText }) {
           type='image/svg+xml'
           href={`data:image/svg+xml,${encodeURIComponent(svgText)}`}
         />
-
-        <style>
-          {instructions
-            .map(
-              (_, i) =>
-                `
-                .highlight-${i} {
-                  display: none;
-                }
-
-                .main:has(.command-${i}:focus-within) .highlight-${i},
-                .main:has(.command-${i}:hover) .highlight-${i} {
-                  display: inline;
-                }
-          `
-            )
-            .join('')}
-        </style>
       </NextHead>
       {/* Fathom - simple website analytics */}
       {process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&

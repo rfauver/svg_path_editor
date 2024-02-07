@@ -29,6 +29,9 @@ export default function Home() {
 
     setIndexToFocus(null);
   }, [indexToFocus]);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(null);
+
   const updateInstructions = (i, instruction) => {
     const newInstructions = [...instructions];
     newInstructions[i] = { ...newInstructions[i], raw: instruction };
@@ -110,6 +113,8 @@ export default function Home() {
               updateInstructions={updateInstructions}
               addCommand={addCommand}
               removeCommand={removeCommand}
+              setHoveredIndex={setHoveredIndex}
+              setActiveIndex={setActiveIndex}
               maxCoord={maxCoord}
             />
           </div>
@@ -125,6 +130,8 @@ export default function Home() {
             commands={commands}
             fillColor={fillColor}
             maxCoord={maxCoord}
+            hoveredIndex={hoveredIndex}
+            activeIndex={activeIndex}
           />
         </div>
       </main>

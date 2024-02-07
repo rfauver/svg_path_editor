@@ -12,6 +12,8 @@ export default function Editor({
   updateInstructions,
   addCommand,
   removeCommand,
+  setHoveredIndex,
+  setActiveIndex,
   maxCoord,
 }) {
   return (
@@ -31,6 +33,8 @@ export default function Editor({
           updateInstructions={updateInstructions}
           addCommand={addCommand}
           removeCommand={removeCommand}
+          setHoveredIndex={setHoveredIndex}
+          setActiveIndex={setActiveIndex}
         />
       ))}
       <div className={styles.indented}>{'"></path>'}</div>

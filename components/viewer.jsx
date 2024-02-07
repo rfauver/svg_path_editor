@@ -2,7 +2,13 @@ import classnames from 'classnames';
 
 import styles from '../styles/viewer.module.scss';
 
-export default function Viewer({ commands, fillColor, maxCoord }) {
+export default function Viewer({
+  commands,
+  fillColor,
+  maxCoord,
+  hoveredIndex,
+  activeIndex,
+}) {
   return (
     <div className={styles.component}>
       <div className={styles.yCoords}>
@@ -24,7 +30,13 @@ export default function Viewer({ commands, fillColor, maxCoord }) {
             fill={fillColor}
             d={commands.map(c => c.instruction).join(' ')}
           />
-          {commands.map((command, i) => getPathHighlight(command, i, maxCoord))}
+          {commands
+            .map((command, i) =>
+              [hoveredIndex, activeIndex].includes(i)
+                ? getPathHighlight(command, i, maxCoord)
+                : null
+            )
+            .filter(Boolean)}
         </svg>
       </div>
     </div>
