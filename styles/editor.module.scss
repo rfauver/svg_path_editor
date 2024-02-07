@@ -5,6 +5,11 @@
   font-family: var(--font-mono);
   font-size: 14px;
   line-height: 18px;
+  min-width: 504px;
+
+  @media (max-width: 1060px) {
+    min-width: 0;
+  }
 }
 
 .indented {

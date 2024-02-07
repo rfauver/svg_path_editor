@@ -112,8 +112,7 @@ export const COMMANDS = {
       } with a single control point at ${
         absolute ? `${v[0]},${v[1]}` : relativeToString(v, prev, ['x1', 'y1'])
       }`,
-    link:
-      'https://svgwg.org/svg2-draft/paths.html#PathDataQuadraticBezierCommands',
+    link: 'https://svgwg.org/svg2-draft/paths.html#PathDataQuadraticBezierCommands',
   },
   T: {
     name: 'Shortcut Quadratic Curve',
@@ -125,8 +124,7 @@ export const COMMANDS = {
       )} to ${
         absolute ? `${v[0]},${v[1]}` : relativeToString(v, prev)
       }, using a reflection of the previous curve command's control point as the single control point`,
-    link:
-      'https://svgwg.org/svg2-draft/paths.html#PathDataQuadraticBezierCommands',
+    link: 'https://svgwg.org/svg2-draft/paths.html#PathDataQuadraticBezierCommands',
   },
   A: {
     name: 'Elliptical Arc Curve',
@@ -140,8 +138,7 @@ export const COMMANDS = {
       } as the angle of rotation of the ellipse, ${arcFlagString(
         v[3]
       )}, and ${sweepFlagString(v[4])}`,
-    link:
-      'https://svgwg.org/svg2-draft/paths.html#PathDataEllipticalArcCommands',
+    link: 'https://svgwg.org/svg2-draft/paths.html#PathDataEllipticalArcCommands',
   },
   Z: {
     name: 'Close Path',
@@ -153,13 +150,8 @@ export const COMMANDS = {
   },
 };
 
-export const SURROUNDING_TEXT = [
-  '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">',
-  '  <path fill="',
-  '" d="',
-  '  "></path>',
-  '</svg>',
-];
+export const firstLine = maxCoord =>
+  `<svg viewBox="0 0 ${maxCoord} ${maxCoord}" xmlns="http://www.w3.org/2000/svg">`;
 
 export const SHAPES = {
   QUARTER_NOTE: [

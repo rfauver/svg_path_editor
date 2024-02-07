@@ -2,10 +2,7 @@ import classnames from 'classnames';
 
 import styles from '../styles/viewer.module.scss';
 
-export default function Viewer({ commands, fillColor }) {
-  const endPoints = commands.map(command => command.endPoint()).filter(Boolean);
-  const maxCoord = Math.max(...endPoints.flat(), 100);
-
+export default function Viewer({ commands, fillColor, maxCoord }) {
   return (
     <div className={styles.component}>
       <div className={styles.yCoords}>

@@ -1,6 +1,6 @@
 import ColorPicker from '../components/color_picker';
 import Command from '../components/command';
-import { SURROUNDING_TEXT } from '../utils/constants';
+import { firstLine } from '../utils/constants';
 
 import styles from '../styles/editor.module.scss';
 
@@ -12,14 +12,15 @@ export default function Editor({
   updateInstructions,
   addCommand,
   removeCommand,
+  maxCoord,
 }) {
   return (
     <div className={styles.component}>
-      <div>{SURROUNDING_TEXT[0]}</div>
+      <div>{firstLine(maxCoord)}</div>
       <div className={styles.indented}>
-        {SURROUNDING_TEXT[1]}
+        {'<path fill="'}
         <ColorPicker fillColor={fillColor} setFillColor={setFillColor} />
-        {SURROUNDING_TEXT[2]}
+        {'" d="'}
       </div>
       {commands.map((command, index) => (
         <Command
@@ -32,8 +33,8 @@ export default function Editor({
           removeCommand={removeCommand}
         />
       ))}
-      <div className={styles.indented}>{SURROUNDING_TEXT[3]}</div>
-      <div>{SURROUNDING_TEXT[4]}</div>
+      <div className={styles.indented}>{'"></path>'}</div>
+      <div>{'</svg>'}</div>
     </div>
   );
 }

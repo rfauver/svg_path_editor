@@ -6,7 +6,7 @@ import LearnMore from '../components/learn_more';
 import Viewer from '../components/viewer';
 import ButtonRow from '../components/button_row';
 import CommandModel from '../models/command_model';
-import { SURROUNDING_TEXT, SHAPES } from '../utils/constants';
+import { SHAPES, firstLine } from '../utils/constants';
 import withUuids from '../utils/withUuids';
 import classnames from 'classnames';
 
@@ -53,12 +53,6 @@ export default function Home() {
       ...instructions.slice(index + 1),
     ]);
   };
-  const svgText = [
-    SURROUNDING_TEXT[0],
-    `${SURROUNDING_TEXT[1]}${fillColor}${SURROUNDING_TEXT[2]}`,
-    '    ' + toRaw(instructions).join(' '),
-    ...SURROUNDING_TEXT.slice(3),
-  ].join('\n');
 
   let previousEndPoint, previousMEndPoint;
   const commands = instructions.map(instruction => {
@@ -81,6 +75,16 @@ export default function Home() {
 
     return command;
   });
+  const endPoints = commands.map(command => command.endPoint()).filter(Boolean);
+  const maxCoord = Math.ceil(Math.max(...endPoints.flat(), 100));
+
+  const svgText = [
+    firstLine(maxCoord),
+    `  <path fill="${fillColor}" d="`,
+    '    ' + toRaw(instructions).join(' '),
+    '  "></path>',
+    '</svg>',
+  ].join('\n');
 
   return (
     <div className={styles.container}>
@@ -106,6 +110,7 @@ export default function Home() {
               updateInstructions={updateInstructions}
               addCommand={addCommand}
               removeCommand={removeCommand}
+              maxCoord={maxCoord}
             />
           </div>
           <ButtonRow
@@ -116,7 +121,11 @@ export default function Home() {
         </div>
 
         <div className={classnames(styles.section, styles.viewer)}>
-          <Viewer commands={commands} fillColor={fillColor} />
+          <Viewer
+            commands={commands}
+            fillColor={fillColor}
+            maxCoord={maxCoord}
+          />
         </div>
       </main>
       <div className={styles.learnMore}>
