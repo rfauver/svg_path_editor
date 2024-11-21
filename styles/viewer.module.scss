@@ -21,7 +21,7 @@
   flex-direction: column;
   justify-content: space-between;
   text-align: right;
-  margin: 18px 2px 1px 0;
+  margin: 20px 4px 1px 4px;
 }
 
 .rightWrapper {
@@ -31,6 +31,7 @@
 .xCoords {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 2px;
 }
 
 .coord {
@@ -40,6 +41,6 @@
 }
 
 .view {
-  border-top: 1px solid var(--text-color);
-  border-left: 1px solid var(--text-color);
+  border-top: 1px dashed var(--axis-color);
+  border-left: 1px dashed var(--axis-color);
 }

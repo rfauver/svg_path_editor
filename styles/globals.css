@@ -10,6 +10,7 @@
   --toggle-disabled-color: #ccc;
   --info-color: #777;
   --button-hover-color: #e2e3e5;
+  --axis-color: #70769e;
   --input-shadow: 1px 1px 4px rgba(0, 0, 0, 0.08);
   --annotation-shadow: 3px 3px 4px 1px rgba(0, 0, 0, 0.16);
 }
@@ -49,7 +50,8 @@ a {
 
 @font-face {
   font-family: 'Bitstream Vera Sans Mono';
-  src: url('../public/Bitstream-Vera-Sans-Mono-400.woff2') format('woff2'),
+  src:
+    url('../public/Bitstream-Vera-Sans-Mono-400.woff2') format('woff2'),
     url('../public/Bitstream-Vera-Sans-Mono-400.woff') format('woff');
   font-display: swap;
 }
