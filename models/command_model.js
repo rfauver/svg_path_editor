@@ -6,7 +6,9 @@ export default class CommandModel {
     instruction,
     cursorPosition,
     previousEndPoint,
-    previousMEndPoint
+    previousMEndPoint,
+    previousControlPoint,
+    previousLetter
   ) {
     this.uuid = uuid;
     this.instruction = instruction;
@@ -14,6 +16,8 @@ export default class CommandModel {
     this.cursorPosition = cursorPosition;
     this.previousEndPoint = previousEndPoint;
     this.previousMEndPoint = previousMEndPoint;
+    this.previousControlPoint = previousControlPoint;
+    this.previousLetter = previousLetter;
     this.properties = COMMANDS[this.letter?.toUpperCase()];
   }
 
@@ -85,6 +89,48 @@ export default class CommandModel {
     return match
       .slice(1, 3)
       .map((point, i) => parseFloat(point) + relativeOffset[i]);
+  };
+
+  lastControlPoint = () => {
+    if (
+      ['M', 'L', 'H', 'V', 'A', 'Z'].some(letter => this.isA(letter)) ||
+      !this.partValues
+    ) {
+      return null;
+    }
+
+    const relativeOffset =
+      this.isRelative() && this.previousEndPoint
+        ? this.previousEndPoint
+        : [0, 0];
+
+    if (this.isA('C')) {
+      return [
+        parseFloat(this.partValues[2]) + relativeOffset[0],
+        parseFloat(this.partValues[3]) + relativeOffset[1],
+      ];
+    }
+    if (this.isA('Q') || this.isA('S')) {
+      return [
+        parseFloat(this.partValues[0]) + relativeOffset[0],
+        parseFloat(this.partValues[1]) + relativeOffset[1],
+      ];
+    }
+    if (this.isA('T') && this.previousEndPoint) {
+      if (
+        this.previousControlPoint &&
+        !['S', 'C'].includes(this.previousLetter?.toUpperCase())
+      ) {
+        const diffX = this.previousEndPoint[0] - this.previousControlPoint[0];
+        const diffY = this.previousEndPoint[1] - this.previousControlPoint[1];
+        return [
+          this.previousEndPoint[0] + diffX,
+          this.previousEndPoint[1] + diffY,
+        ];
+      } else {
+        return this.previousEndPoint;
+      }
+    }
   };
 
   #toRelativeX = x =>

@@ -67,6 +67,25 @@ function getPathHighlight(command, index, maxCoord) {
       pathString = `M${command.previousEndPoint} ${command.instruction}`;
     }
   }
+
+  if (
+    ((command.isA('S') &&
+      ['S', 'C'].includes(command.previousLetter?.toUpperCase())) ||
+      (command.isA('T') &&
+        ['T', 'Q'].includes(command.previousLetter?.toUpperCase()))) &&
+    command.previousControlPoint &&
+    command.previousEndPoint
+  ) {
+    const diffX = command.previousEndPoint[0] - command.previousControlPoint[0];
+    const diffY = command.previousEndPoint[1] - command.previousControlPoint[1];
+    const newControlPoint = [
+      command.previousEndPoint[0] + diffX,
+      command.previousEndPoint[1] + diffY,
+    ];
+    const curveType = { S: 'C', T: 'Q' }[command.letter.toUpperCase()];
+
+    pathString = `M${command.previousEndPoint} ${curveType}${newControlPoint} ${command.absoluteInstruction().slice(1)}`;
+  }
   return (
     <path
       className={`highlight-${index}`}

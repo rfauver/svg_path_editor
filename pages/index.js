@@ -57,14 +57,16 @@ export default function Home() {
     ]);
   };
 
-  let previousEndPoint, previousMEndPoint;
+  let previousEndPoint, previousMEndPoint, previousControlPoint, previousLetter;
   const commands = instructions.map(instruction => {
     const command = new CommandModel(
       instruction.uuid,
       instruction.raw,
       cursorPosition,
       previousEndPoint,
-      previousMEndPoint
+      previousMEndPoint,
+      previousControlPoint,
+      previousLetter
     );
     previousEndPoint = command.endPoint();
     if (command.isA('M')) previousMEndPoint = previousEndPoint;
@@ -75,6 +77,8 @@ export default function Home() {
     if (match) {
       command.setPartValues(match.slice(1));
     }
+    previousControlPoint = command.lastControlPoint();
+    previousLetter = command.letter;
 
     return command;
   });
