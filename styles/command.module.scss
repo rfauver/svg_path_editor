@@ -32,6 +32,16 @@
   background-color: var(--background-color);
   padding-top: 2px;
   margin-bottom: 2px;
+
+  &:hover,
+  &:focus-within {
+    .instruction,
+    .dropdown,
+    .toggleSwitch,
+    .button {
+      box-shadow: var(--highlight-input-shadow);
+    }
+  }
 }
 
 .commandLine {
