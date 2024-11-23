@@ -46,7 +46,13 @@ export default function PasteBox({ setInstructions }) {
         if (grouped.some(group => group.length !== groupLength)) {
           return null;
         }
-        return grouped.map(group => `${letter}${group.join(',')}`);
+        return grouped.map((group, i) => {
+          let implicitLetter = letter;
+          if (i !== 0 && letter.toUpperCase() === 'M') {
+            implicitLetter = { m: 'l', M: 'L' }[letter];
+          }
+          return `${implicitLetter}${group.join(',')}`;
+        });
       })
       .flat(1);
 
