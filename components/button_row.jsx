@@ -50,11 +50,12 @@ export default function ButtonRow({ svgText, commands, setInstructions }) {
   };
 
   const convertText = str =>
-    windowSize.width > 402 ? `Convert to ${str}` : str;
+    windowSize.width > 500 ? `Convert to ${str}` : str;
 
   return (
     <div className={styles.component}>
       <button
+        className={styles.convert}
         name='Convert to Absolute'
         onClick={onAbsoluteClicked}
         onKeyDown={onPress(onAbsoluteClicked)}
@@ -62,6 +63,7 @@ export default function ButtonRow({ svgText, commands, setInstructions }) {
         {convertText('Absolute')}
       </button>
       <button
+        className={styles.convert}
         name='Convert to Relative'
         onClick={onRelativeClicked}
         onKeyDown={onPress(onRelativeClicked)}

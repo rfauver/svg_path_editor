@@ -53,10 +53,12 @@
 .sectionWrapper {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 
   @media (max-width: 1060px) {
     max-width: 750px;
     margin-bottom: 10px;
+    flex-direction: column-reverse;
   }
 }
 

@@ -1,7 +1,6 @@
 .component {
   height: 60px;
   margin-top: auto;
-  padding-top: 10px;
   display: flex;
   gap: 10px;
 
@@ -23,6 +22,28 @@
     }
     &:active {
       transform: scale(0.95);
+    }
+  }
+
+  .convert {
+    min-width: 152px;
+  }
+
+  @media (max-width: 1060px) {
+    height: 52px;
+
+    button {
+      font-size: 14px;
+    }
+
+    .convert {
+      min-width: 136px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .convert {
+      min-width: 0;
     }
   }
 }
