@@ -10,7 +10,7 @@ export default function Head({ instructions, svgText }) {
         <title>SVG Path Editor</title>
         <meta
           name='description'
-          content='Interactive tool to edit an SVG by editing the path commands that describe its shape'
+          content='Learn how SVG paths work by editing each path command and visualizing how they change the shape.'
         />
         <meta
           name='viewport'
@@ -22,6 +22,8 @@ export default function Head({ instructions, svgText }) {
           type='image/svg+xml'
           href={`data:image/svg+xml,${encodeURIComponent(svgText)}`}
         />
+        <meta name='og:title' content='SVG Path Editor' />
+        <meta name='og:image' content='https://svg-path.com/og_image.png' />
       </NextHead>
       {/* Fathom - simple website analytics */}
       {process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' &&
