@@ -39,6 +39,9 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build
         run: yarn build
+        env:
+          VITE_FATHOM_DOMAIN: ${{ vars.VITE_FATHOM_DOMAIN }}
+          VITE_FATHOM_ID: ${{ vars.VITE_FATHOM_ID }}
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
