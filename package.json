@@ -1,21 +1,25 @@
 {
-  "name": "svg",
+  "name": "svg_path_editor",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
     "classnames": "^2.5.1",
-    "next": "15",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-helmet": "^6.1.0",
     "sass": "^1.70.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "prettier": "3.2.4"
+    "@vitejs/plugin-react": "^5.1.1",
+    "globals": "^16.5.0",
+    "prettier": "3.2.4",
+    "vite": "^7.2.4"
   }
 }

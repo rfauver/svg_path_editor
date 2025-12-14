@@ -54,7 +54,7 @@ a {
 @font-face {
   font-family: 'Bitstream Vera Sans Mono';
   src:
-    url('../public/Bitstream-Vera-Sans-Mono-400.woff2') format('woff2'),
-    url('../public/Bitstream-Vera-Sans-Mono-400.woff') format('woff');
+    url('../Bitstream-Vera-Sans-Mono-400.woff2') format('woff2'),
+    url('../Bitstream-Vera-Sans-Mono-400.woff') format('woff');
   font-display: swap;
 }
