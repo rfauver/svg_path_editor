@@ -19,6 +19,19 @@ export default function LearnMore() {
         </a>
       </p>
       <p>
+        <a
+          href='https://www.joshwcomeau.com/svg/friendly-introduction-to-svg/'
+          target='_blank'
+        >
+          A Friendly Introduction to SVG by Josh Comeau
+        </a>
+      </p>
+      <p>
+        <a href='https://www.nan.fyi/svg-paths' target='_blank'>
+          A Deep Dive Into SVG Path Commands by Nanda Syahrasyad
+        </a>
+      </p>
+      <p>
         <a href='https://www.youtube.com/watch?v=9qen5CKjUe8' target='_blank'>
           Demystifyingish SVG paths from HTTP 203
         </a>
